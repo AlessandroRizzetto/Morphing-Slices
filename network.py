@@ -2,7 +2,7 @@ from mininet.topo import Topo
 from mininet.net import Mininet
 from mininet.log import setLogLevel
 from mininet.cli import CLI
-from mininet.node import OVSSwitch, Controller, RemoteController
+from mininet.node import OVSKernelSwitch, Controller, RemoteController
 
 class RoutingTopo(Topo):
     def __init__(self):
@@ -23,22 +23,14 @@ class RoutingTopo(Topo):
             self.addHost("h%d" % (i + 1), **host_config)
 
         # Add switch links
-        self.addLink("s1", "s2", **host_link_config)
+        #self.addLink("s1", "s2", **host_link_config)
         self.addLink("s1", "s6", **host_link_config)
-        self.addLink("s1", "s5", **host_link_config)
-        self.addLink("s2", "s1", **host_link_config)
+        #self.addLink("s1", "s5", **host_link_config)
         self.addLink("s2", "s5", **host_link_config)
         self.addLink("s3", "s5", **host_link_config)
-        self.addLink("s4", "s5", **host_link_config)
+        #self.addLink("s4", "s5", **host_link_config)
         self.addLink("s4", "s6", **host_link_config)
-        self.addLink("s5", "s1", **host_link_config)
-        self.addLink("s5", "s2", **host_link_config)
-        self.addLink("s5", "s3", **host_link_config)
-        self.addLink("s5", "s4", **host_link_config)
         self.addLink("s5", "s6", **host_link_config)
-        self.addLink("s6", "s1", **host_link_config)
-        self.addLink("s6", "s4", **host_link_config)
-        self.addLink("s6", "s5", **host_link_config)
 
         # Add host links
         self.addLink("h1", "s1", **host_link_config)
@@ -56,7 +48,7 @@ class RoutingTopo(Topo):
         
 if __name__ == "__main__":
     topo = RoutingTopo()
-    net = Mininet(topo=topo, controller=RemoteController, build=False)
+    net = Mininet(topo=topo,switch=OVSKernelSwitch, controller=RemoteController, build=False)
     controller = RemoteController("c1", ip="127.0.0.1")
     net.start()
 
