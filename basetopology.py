@@ -14,14 +14,14 @@ class RoutingTopo(Topo):
         host_link_config = dict()
 
         # Create switch nodes
-        for i in range(6):
+        for i in range(10):
             #sconfig = {"dpid": "%016x" % (i + 1)}
-            sconfig = {"dpid": "00:00:00:00:00:0"+str(i + 1)}
+            sconfig = {"dpid": "00:00:00:00:00:"+str(i + 1)}
             self.addSwitch("s%d" % (i + 1), **sconfig)
 
         # Create host nodes
-        for i in range(6):
-            host_config = {"dpid": "00:00:00:00:00:0"+str(i + 1)}
+        for i in range(11):
+            host_config = {"dpid": "00:00:00:00:00:"+str(i + 1)}
             self.addHost("h%d" % (i + 1), **host_config)
             #self.addHost("h00:00:00:00:00:0"+str(i + 1), **host_config)
 
@@ -33,20 +33,23 @@ class RoutingTopo(Topo):
         self.addLink("h4", "s4", **host_link_config)
         self.addLink("h5", "s5", **host_link_config)
         self.addLink("h6", "s6", **host_link_config)
+        self.addLink("h7", "s7", **host_link_config)
+        self.addLink("h8", "s8", **host_link_config)
+        self.addLink("h9", "s9", **host_link_config)
+        self.addLink("h10", "s10", **host_link_config)
+        self.addLink("h11", "s10", **host_link_config)
 
         # Add switch links        
-        #self.addLink("s1", "s2", **host_link_config)
-        self.addLink("s1", "s2", **host_link_config)
+        self.addLink("s1", "s3", **host_link_config)
         self.addLink("s2", "s3", **host_link_config)
-        #self.addLink("s1", "s5", **host_link_config)
-        self.addLink("s2", "s5", **host_link_config)
-        self.addLink("s5", "s4", **host_link_config)
-        #self.addLink("s4", "s5", **host_link_config)
-        self.addLink("s5", "s6", **host_link_config)
+        self.addLink("s4", "s3", **host_link_config)
+        self.addLink("s3", "s5", **host_link_config)
+        self.addLink("s5", "s7", **host_link_config)
+        self.addLink("s7", "s6", **host_link_config)
+        self.addLink("s7", "s8", **host_link_config)
+        self.addLink("s7", "s9", **host_link_config)
+        self.addLink("s9", "s10", **host_link_config)
 
-        #inserisco loop
-        #self.addLink("s2", "s1", **host_link_config)
-        #self.addLink("s1", "s2", **host_link_config)
 
 
 
