@@ -59,12 +59,15 @@ class StarTopo(app_manager.RyuApp):
         src = eth_pkt.src
 
         # get the received port number from packet_in message.
+        print(vars(msg))
         in_port = msg.match['in_port']
+        out_port = msg.match['out_port']
+        
 
         for x in datapath.ports:
             conf=datapath.ports[x].config
             break
-        self.logger.info("%s-%s | %s-%s",dpid,src, dst, in_port)
+        self.logger.info("%s | %s",in_port,out_port)
         
         # learn a mac address to avoid FLOOD next time.
         self.mac_to_port[dpid][src] = in_port
