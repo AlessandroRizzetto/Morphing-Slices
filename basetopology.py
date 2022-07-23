@@ -19,21 +19,32 @@ class RoutingTopo(Topo):
             sconfig = {"dpid": "00:00:00:00:00:"+str(i + 1)}
             self.addSwitch("s%d" % (i + 1), **sconfig)
 
-        # Create host nodes
-        for i in range(11):
-            host_config = {"dpid": "00:00:00:00:00:"+str(i + 1)}
-            self.addHost("h%d" % (i + 1), **host_config)
-            #self.addHost("h00:00:00:00:00:0"+str(i + 1), **host_config)
-
+        # Create host (not the 5 & 7, for not possible)
+        host_config = {"dpid": "00:00:00:00:00:01"}
+        host_config = {"dpid": "00:00:00:00:00:02"}
+        host_config = {"dpid": "00:00:00:00:00:03"}
+        host_config = {"dpid": "00:00:00:00:00:04"}
+        host_config = {"dpid": "00:00:00:00:00:06"}
+        host_config = {"dpid": "00:00:00:00:00:08"}
+        host_config = {"dpid": "00:00:00:00:00:09"}
+        host_config = {"dpid": "00:00:00:00:00:10"}
+        host_config = {"dpid": "00:00:00:00:00:11"}
+        self.addHost("h%d" % 1, **host_config)
+        self.addHost("h%d" % 2, **host_config)
+        self.addHost("h%d" % 3, **host_config)
+        self.addHost("h%d" % 4, **host_config)
+        self.addHost("h%d" % 6, **host_config)
+        self.addHost("h%d" % 8, **host_config)
+        self.addHost("h%d" % 9, **host_config)
+        self.addHost("h%d" % 10, **host_config)
+        self.addHost("h%d" % 11, **host_config)
 
         # Add host links
         self.addLink("h1", "s1", **host_link_config)
         self.addLink("h2", "s2", **host_link_config)
         self.addLink("h3", "s3", **host_link_config)
         self.addLink("h4", "s4", **host_link_config)
-        self.addLink("h5", "s5", **host_link_config)
         self.addLink("h6", "s6", **host_link_config)
-        self.addLink("h7", "s7", **host_link_config)
         self.addLink("h8", "s8", **host_link_config)
         self.addLink("h9", "s9", **host_link_config)
         self.addLink("h10", "s10", **host_link_config)
@@ -45,10 +56,10 @@ class RoutingTopo(Topo):
         self.addLink("s4", "s3", **host_link_config)
         self.addLink("s3", "s5", **host_link_config)
         self.addLink("s5", "s7", **host_link_config)
-        self.addLink("s7", "s6", **host_link_config)
+        self.addLink("s6", "s7", **host_link_config)
         self.addLink("s7", "s8", **host_link_config)
-        self.addLink("s7", "s9", **host_link_config)
-        self.addLink("s9", "s10", **host_link_config)
+        self.addLink("s9", "s7", **host_link_config)
+        self.addLink("s10", "s9", **host_link_config)
 
 
 
