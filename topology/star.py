@@ -47,7 +47,7 @@ class StarTopo(app_manager.RyuApp):
         ofproto = datapath.ofproto
         parser = datapath.ofproto_parser
 
-        # get Datapath ID to identify OpenFlow switches.
+        # SWITCH ID.
         dpid = datapath.id
         
         self.mac_to_port.setdefault(dpid, {})
@@ -59,7 +59,7 @@ class StarTopo(app_manager.RyuApp):
         src = eth_pkt.src
 
         # get the received port number from packet_in message.
-        print(vars(msg))
+        #print(vars(msg))
         in_port = msg.match['in_port']
         #out_port = msg.match['out_port']
         
@@ -67,7 +67,9 @@ class StarTopo(app_manager.RyuApp):
         for x in datapath.ports:
             conf=datapath.ports[x].config
             break
-        self.logger.info("input port: %s",in_port)
+
+        if(dst != 'ff:ff:ff:ff:ff:ff' and dst != '33:33:00:00:00:02'):
+            self.logger.info("input port: P%s IN SWITCH S%s looking for %s",in_port,dpid,dst)
         
         # learn a mac address to avoid FLOOD next time.
         self.mac_to_port[dpid][src] = in_port
@@ -93,3 +95,16 @@ class StarTopo(app_manager.RyuApp):
                                   in_port=in_port, actions=actions,
                                   data=msg.data)
         datapath.send_msg(out)
+
+        '''h1 ping h2
+        self.logger.info("input port: P%s IN SWITCH S%s looking for %s",in_port,dpid,dst)
+        cerca h1 partendo da h2 (non so perche` al contrario)
+        input port: P1 IN SWITCH S2 looking for 9e:3d:57:cf:ba:43
+        input port: P2 IN SWITCH S3 looking for 9e:3d:57:cf:ba:43
+        input port: P2 IN SWITCH S1 looking for 9e:3d:57:cf:ba:43
+        
+        lo trova e ora torna verso h2
+        input port: P1 IN SWITCH S1 looking for 5e:68:82:5e:44:b6
+        input port: P1 IN SWITCH S3 looking for 5e:68:82:5e:44:b6
+        input port: P2 IN SWITCH S2 looking for 5e:68:82:5e:44:b6
+        '''
