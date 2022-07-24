@@ -25,11 +25,18 @@
 project description:)
 
 # Mininet
-Here we have all our topologies: 
-![image info](https://raw.githubusercontent.com/elrich2610/Morphing-Slices/bcba52a3b141f70e4b4ded9e583022a07cad2352/topologie.svg
+We have based our project on a "star like" topology wich gave us the flexibility needed for building on top of that multiple topologies.
+The ones that we've decided to implement are:
+- Tree topology
+- Linear topology
+- Star topology
+- Ring topology
+
+The following schema rappresent our base topology built with MININET and the virtual topologies made with RYU-Manager, the red lines are used to easily identify the differences between the base and the current topology. 
+![image info](https://raw.githubusercontent.com/elrich2610/Morphing-Slices/a3d48e770b402eb33f813cfb6ddaa3ae23aef37a/topologie.svg
 )
 
-List of all switches port so we don't get lost
+Below a table rappresenting the ports/device connection of every switch
 |HOST|Port 1|Port 2|Port 3|Port 4|
 |:--|:--:|:--:|:--:|:--:|
 **S1**|  H1  | S9  | -	    |-
@@ -50,7 +57,7 @@ List of all switches port so we don't get lost
 git clone https://github.com/elrich2610/Morphing-Slices.git
 cd Morphing-Slices
 ```
-Now we'll have to work with **2** separate terminals:
+From now on we'll have to work with **2** separate terminals:
 
 On your first terminal start the controller which will decide how our virtualTopology will looks like
 ```bash
