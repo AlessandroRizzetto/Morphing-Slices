@@ -14,6 +14,7 @@
 - [Base topology](#Mininet)
 - [How To](#Usage)
     - [Proof of Concept](#PoC)
+        - [FullOpen topology](#FullOpen)
         - [Tree topology](#Tree)
         - [Star topology](#Star)
         - [Linear topology](#Linear)
@@ -75,6 +76,8 @@ sudo python3 baseTopology.py
 ### PoC
 Using the "pingall" command we'll see how our packets won't follow the base topology but will run trough the path 
 choosen from our controller AKA our controller has modified the logical topology.
+
+##### FullOpen:
 The expected result for the basetopology with all the switches in OFPP_FLOOD mode is the following:
 ```txt
 #everything reach everything
@@ -91,7 +94,7 @@ h8 -> h1 h2 h3 h4 h5 h6 h7
 *** Results: 0% dropped (56/56 received)
 ```
 
-##### Tree topology:
+##### Tree:
 We are cutting everything that is connected to the swtich 2 and 3 for building a treeTopology (Horizontaly oriented).
 If we want we can add more device (switches and hosts) to our topology and they will all act accordingly with our controller, answering if they're not connected ouside of the (single) path running trough the switch number 9: S1-S9-S10-SN
 Or, in a easier way, if they are not cutted off from the topology by some red line. 
@@ -109,19 +112,19 @@ h8 -> h1 X X h4 h5 h6 h7
 *** Results: 46% dropped (30/56 received)
 ```
 
-##### Star topology:
+##### Star:
 explanation of the cutted branches and why it should result like this
 ```txt
 pingall star.py
 ```
 
-##### Linear topology:
+##### Linear:
 explanation of the cutted branches and why it should result like this
 ```txt
 pingall linear.py
 ```
 
-##### Ring topology:
+##### Ring:
 explanation of the cutted branches and why it should result like this
 ```txt
 pingall ring.py
