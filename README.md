@@ -124,5 +124,7 @@ pingall ring.py
 
 ### Group-Members
 [Andreatta Thomas - 213912](https://github.com/ThomasAndreatta)
+
 [Mereuta Mihaela - 209035](https://github.com/plsmiha)
+
 [Rizzetto Alessandro - 209783](https://github.com/elrich2610)
