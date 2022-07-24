@@ -6,12 +6,12 @@ from ryu.ofproto import ofproto_v1_3
 from ryu.lib.packet import packet
 from ryu.lib.packet import ethernet
 
-class StarTopo(app_manager.RyuApp):
+class RingTopo(app_manager.RyuApp):
     avoid_dst =['ff:ff:ff:ff:ff:ff', '33:33:00:00:00:02']
     OFP_VERSIONS = [ofproto_v1_3.OFP_VERSION]
 
     def __init__(self, *args, **kwargs):
-        super(StarTopo, self).__init__(*args, **kwargs)
+        super(RingTopo, self).__init__(*args, **kwargs)
         # initialize mac address table.
         self.mac_to_port = {}
 

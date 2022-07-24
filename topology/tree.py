@@ -6,12 +6,12 @@ from ryu.ofproto import ofproto_v1_3
 from ryu.lib.packet import packet
 from ryu.lib.packet import ethernet
 
-class StarTopo(app_manager.RyuApp):
+class TreeTopo(app_manager.RyuApp):
     avoid_dst =['ff:ff:ff:ff:ff:ff', '33:33:00:00:00:02']
     OFP_VERSIONS = [ofproto_v1_3.OFP_VERSION]
 
     def __init__(self, *args, **kwargs):
-        super(StarTopo, self).__init__(*args, **kwargs)
+        super(TreeTopo, self).__init__(*args, **kwargs)
         # initialize mac address table.
         self.mac_to_port = {}
 
@@ -92,13 +92,8 @@ class StarTopo(app_manager.RyuApp):
             else:
                 out_port = ofproto.OFPP_FLOOD
 
-        '''more dynamic, can add N branches and keep avoiding the s2 and s3
-        if(dpid == 9 and (in_port != 2 and in_port !=3)):
-            if dst in self.mac_to_port[dpid]:
-                out_port = self.mac_to_port[dpid][dst]
             else:
                 out_port = ofproto.OFPP_FLOOD
-        '''            
 
 
 
@@ -117,36 +112,3 @@ class StarTopo(app_manager.RyuApp):
                                   data=msg.data)
         datapath.send_msg(out)
 
-        '''
-        >h1 ping h2
-        self.logger.info("input port: P%s IN SWITCH S%s looking for %s",in_port,dpid,dst)
-        
-        cerca h1 partendo da h2 (non so perche` al contrario)
-        input port: P1 IN SWITCH S4 looking for 00:00:00:00:00:01
-        input port: P1 IN SWITCH S8 looking for 00:00:00:00:00:01
-        input port: P1 IN SWITCH S16 looking for 00:00:00:00:00:01
-        input port: P4 IN SWITCH S9 looking for 00:00:00:00:00:01
-        input port: P2 IN SWITCH S1 looking for 00:00:00:00:00:01
-        #lo trova e ora torna in dietro
-        input port: P1 IN SWITCH S1 looking for 00:00:00:00:00:04
-        input port: P1 IN SWITCH S9 looking for 00:00:00:00:00:04
-        input port: P2 IN SWITCH S16 looking for 00:00:00:00:00:04
-        input port: P4 IN SWITCH S8 looking for 00:00:00:00:00:04
-        input port: P2 IN SWITCH S4 looking for 00:00:00:00:00:04
-
-        pingall:
-        mininet> pingall
-        *** Ping: testing ping reachability
-        h1 -> X X h4 h5 h6 h7 h8
-        h2 -> X X X X X X X
-        h3 -> X X X X X X X
-        h4 -> h1 X X h5 h6 h7 h8
-        h5 -> h1 X X h4 h6 h7 h8
-        h6 -> h1 X X h4 h5 h7 h8
-        h7 -> h1 X X h4 h5 h6 h8
-        h8 -> h1 X X h4 h5 h6 h7
-        *** Results: 46% dropped (30/56 received)
-
-
-
-        '''
