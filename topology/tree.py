@@ -108,15 +108,36 @@ class StarTopo(app_manager.RyuApp):
                                   data=msg.data)
         datapath.send_msg(out)
 
-        '''h1 ping h2
+        '''
+        >h1 ping h2
         self.logger.info("input port: P%s IN SWITCH S%s looking for %s",in_port,dpid,dst)
-        cerca h1 partendo da h2 (non so perche` al contrario)
-        input port: P1 IN SWITCH S2 looking for 9e:3d:57:cf:ba:43
-        input port: P2 IN SWITCH S3 looking for 9e:3d:57:cf:ba:43
-        input port: P2 IN SWITCH S1 looking for 9e:3d:57:cf:ba:43
         
-        lo trova e ora torna verso h2
-        input port: P1 IN SWITCH S1 looking for 5e:68:82:5e:44:b6
-        input port: P1 IN SWITCH S3 looking for 5e:68:82:5e:44:b6
-        input port: P2 IN SWITCH S2 looking for 5e:68:82:5e:44:b6
+        cerca h1 partendo da h2 (non so perche` al contrario)
+        input port: P1 IN SWITCH S4 looking for 00:00:00:00:00:01
+        input port: P1 IN SWITCH S8 looking for 00:00:00:00:00:01
+        input port: P1 IN SWITCH S16 looking for 00:00:00:00:00:01
+        input port: P4 IN SWITCH S9 looking for 00:00:00:00:00:01
+        input port: P2 IN SWITCH S1 looking for 00:00:00:00:00:01
+        #lo trova e ora torna in dietro
+        input port: P1 IN SWITCH S1 looking for 00:00:00:00:00:04
+        input port: P1 IN SWITCH S9 looking for 00:00:00:00:00:04
+        input port: P2 IN SWITCH S16 looking for 00:00:00:00:00:04
+        input port: P4 IN SWITCH S8 looking for 00:00:00:00:00:04
+        input port: P2 IN SWITCH S4 looking for 00:00:00:00:00:04
+
+        pingall:
+        mininet> pingall
+        *** Ping: testing ping reachability
+        h1 -> X X h4 h5 h6 h7 h8
+        h2 -> X X X X X X X
+        h3 -> X X X X X X X
+        h4 -> h1 X X h5 h6 h7 h8
+        h5 -> h1 X X h4 h6 h7 h8
+        h6 -> h1 X X h4 h5 h7 h8
+        h7 -> h1 X X h4 h5 h6 h8
+        h8 -> h1 X X h4 h5 h6 h7
+        *** Results: 46% dropped (30/56 received)
+
+
+
         '''

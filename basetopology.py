@@ -38,12 +38,12 @@ class RoutingTopo(Topo):
         self.addLink("s1", "s9", **host_link_config)
         self.addLink("s2", "s9", **host_link_config)
         self.addLink("s3", "s9", **host_link_config)
-        self.addLink("s9", "s10", **host_link_config)
-        self.addLink("s10", "s8", **host_link_config)
         self.addLink("s8", "s4", **host_link_config)
         self.addLink("s8", "s5", **host_link_config)
-        self.addLink("s8", "s6", **host_link_config)
         self.addLink("s6", "s7", **host_link_config)
+        self.addLink("s8", "s6", **host_link_config)
+        self.addLink("s10", "s8", **host_link_config)
+        self.addLink("s9", "s10", **host_link_config)
 
 
 
