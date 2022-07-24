@@ -74,13 +74,13 @@ class StarTopo(app_manager.RyuApp):
 
         # if the destination mac address is already learned,
         # decide which port to output the packet, otherwise FLOOD.
-        if(dpid == 9 and dst == '00:00:00:00:00:01'):
+        if(dpid == 9 and in_port == 4):
             if dst in self.mac_to_port[dpid]:
                 out_port = self.mac_to_port[dpid][dst]
             else:
                 out_port = ofproto.OFPP_FLOOD
                 out_port = 1
-        elif(dpid == 9):
+        elif(dpid == 9 and in_port == 1):
             if dst in self.mac_to_port[dpid]:
                 out_port = self.mac_to_port[dpid][dst]
             else:
