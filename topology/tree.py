@@ -7,8 +7,7 @@ from ryu.lib.packet import packet
 from ryu.lib.packet import ethernet
 
 class StarTopo(app_manager.RyuApp):
-    c=0
-
+    avoid_dst =['ff:ff:ff:ff:ff:ff', '33:33:00:00:00:02']
     OFP_VERSIONS = [ofproto_v1_3.OFP_VERSION]
 
     def __init__(self, *args, **kwargs):
@@ -41,7 +40,6 @@ class StarTopo(app_manager.RyuApp):
 
     @set_ev_cls(ofp_event.EventOFPPacketIn, MAIN_DISPATCHER)
     def _packet_in_handler(self, ev):
-        
         msg = ev.msg
         datapath = msg.datapath
         ofproto = datapath.ofproto
@@ -68,7 +66,7 @@ class StarTopo(app_manager.RyuApp):
             conf=datapath.ports[x].config
             break
 
-        if(dst != 'ff:ff:ff:ff:ff:ff' and dst != '33:33:00:00:00:02'):
+        if(dst not in self.avoid_dst):
             self.logger.info("input port: P%s IN SWITCH S%s looking for %s",in_port,dpid,dst)
         
         # learn a mac address to avoid FLOOD next time.
@@ -76,10 +74,24 @@ class StarTopo(app_manager.RyuApp):
 
         # if the destination mac address is already learned,
         # decide which port to output the packet, otherwise FLOOD.
-        if dst in self.mac_to_port[dpid]:
-            out_port = self.mac_to_port[dpid][dst]
+        if(dpid == 9 and dst == '00:00:00:00:00:01'):
+            if dst in self.mac_to_port[dpid]:
+                out_port = self.mac_to_port[dpid][dst]
+            else:
+                out_port = ofproto.OFPP_FLOOD
+                out_port = 1
+        elif(dpid == 9):
+            if dst in self.mac_to_port[dpid]:
+                out_port = self.mac_to_port[dpid][dst]
+            else:
+                out_port = 4
+        elif(dpid == 2 or dpid == 3):
+            return
         else:
-            out_port = ofproto.OFPP_FLOOD
+            if dst in self.mac_to_port[dpid]:
+                out_port = self.mac_to_port[dpid][dst]
+            else:
+                out_port = ofproto.OFPP_FLOOD
 
         # construct action list.
         actions = [parser.OFPActionOutput(out_port)]

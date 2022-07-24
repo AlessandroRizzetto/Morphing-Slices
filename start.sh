@@ -1,8 +1,8 @@
 #/usr/bin/bash
 if [ -z "$1" ]
 then
-	echo "./start [topology name (star)]"
-	val="star"
+	echo "./start [topology name (tree)]"
+	val="tree"
 else
 	val=$1
 fi
