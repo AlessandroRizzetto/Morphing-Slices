@@ -119,9 +119,19 @@ pingall star.py
 ```
 
 ##### Linear:
-explanation of the cutted branches and why it should result like this
+Based on the Tree topology simply removing the connection between the S6 and the S7 we'll be able to modify our topology from the Tree one to the Linear one.
 ```txt
-pingall linear.py
+mininet> pingall
+*** Ping: testing ping reachability
+h1 -> X X h4 h5 h6 X X
+h2 -> X X X X X X X
+h3 -> X X X X X X X
+h4 -> h1 X X h5 h6 X X
+h5 -> h1 X X h4 h6 X X
+h6 -> h1 X X h4 h5 X X
+h7 -> X X X X X X X
+h8 -> X X X X X X X
+*** Results: 78% dropped (12/56 received)
 ```
 
 ##### Ring:
