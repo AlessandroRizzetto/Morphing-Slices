@@ -12,7 +12,7 @@ class StarTopo(app_manager.RyuApp):
 
     def __init__(self, *args, **kwargs):
         super(StarTopo, self).__init__(*args, **kwargs)
-        # initialize mac address table.
+        
         self.mac_to_port = {}
 
     @set_ev_cls(ofp_event.EventOFPSwitchFeatures, CONFIG_DISPATCHER)
@@ -31,7 +31,7 @@ class StarTopo(app_manager.RyuApp):
         ofproto = datapath.ofproto
         parser = datapath.ofproto_parser
 
-        # construct flow_mod message and send it.
+        
         inst = [parser.OFPInstructionActions(ofproto.OFPIT_APPLY_ACTIONS,
                                              actions)]
         mod = parser.OFPFlowMod(datapath=datapath, priority=priority,
@@ -46,17 +46,17 @@ class StarTopo(app_manager.RyuApp):
         parser = datapath.ofproto_parser
 
         # SWITCH ID.
-        dpid = datapath.id
+        switch_id = datapath.id
         
-        self.mac_to_port.setdefault(dpid, {})
+        self.mac_to_port.setdefault(switch_id, {})
 
-        # analyse the received packets using the packet library.
+        # packet analysis
         pkt = packet.Packet(msg.data)
         eth_pkt = pkt.get_protocol(ethernet.ethernet)
         dst = eth_pkt.dst
         src = eth_pkt.src
 
-        # get the received port number from packet_in message.
+        # packet ingress port
         #print(vars(msg))
         in_port = msg.match['in_port']
         #out_port = msg.match['out_port']
@@ -67,23 +67,23 @@ class StarTopo(app_manager.RyuApp):
             break
 
         if(dst not in self.avoid_dst):
-            self.logger.info("input port: P%s IN SWITCH S%s looking for %s",in_port,dpid,dst)
+            self.logger.info("input port: P%s IN SWITCH S%s looking for %s",in_port,switch_id,dst)
         
         # learn a mac address to avoid FLOOD next time.
-        self.mac_to_port[dpid][src] = in_port
+        self.mac_to_port[switch_id][src] = in_port
 
         # if the destination mac address is already learned,
         # decide which port to output the packet, otherwise FLOOD.
-        if(dpid == 7 or dpid==6):
+        if(switch_id == 7 or switch_id==6):
             return
 
-        if dst in self.mac_to_port[dpid]:
-            out_port = self.mac_to_port[dpid][dst]
+        if dst in self.mac_to_port[switch_id]:
+            out_port = self.mac_to_port[switch_id][dst]
         else:
             out_port = ofproto.OFPP_FLOOD
 
 
-        # construct action list.
+        
         actions = [parser.OFPActionOutput(out_port)]
 
         # install a flow to avoid packet_in next time.
@@ -91,7 +91,7 @@ class StarTopo(app_manager.RyuApp):
             match = parser.OFPMatch(in_port=in_port, eth_dst=dst)
             self.add_flow(datapath, 1, match, actions)
 
-        # construct packet_out message and send it.
+        # building the packet out
         out = parser.OFPPacketOut(datapath=datapath,
                                   buffer_id=ofproto.OFP_NO_BUFFER,
                                   in_port=in_port, actions=actions,

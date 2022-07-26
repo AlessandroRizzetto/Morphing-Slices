@@ -15,13 +15,13 @@ class RoutingTopo(Topo):
 
         # Create switch nodes
         for i in range(10):
-            #sconfig = {"dpid": "%016x" % (i + 1)}
-            sconfig = {"dpid": "00:00:00:00:00:"+str(i + 1)}
+            #sconfig = {"switch_id": "%016x" % (i + 1)}
+            sconfig = {"switch_id": "00:00:00:00:00:"+str(i + 1)}
             self.addSwitch("s%d" % (i + 1), **sconfig)
 
         # Create host (not the 5 & 7, for not possible)
         for i in range(8):
-            host_config = {"dpid": "00:00:00:00:00:0"+str(i+1)}
+            host_config = {"switch_id": "00:00:00:00:00:0"+str(i+1)}
             self.addHost("h%d" % (1+i), **host_config)
 
         # Add host links

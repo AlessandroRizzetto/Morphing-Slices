@@ -64,16 +64,16 @@ class SimpleSwitch12(app_manager.RyuApp):
         dst = eth.dst
         src = eth.src
 
-        dpid = datapath.id
-        self.mac_to_port.setdefault(dpid, {})
+        switch_id = datapath.id
+        self.mac_to_port.setdefault(switch_id, {})
 
-        self.logger.info("packet in %s %s %s %s", dpid, src, dst, in_port)
+        self.logger.info("packet in %s %s %s %s", switch_id, src, dst, in_port)
 
         # learn a mac address to avoid FLOOD next time.
-        self.mac_to_port[dpid][src] = in_port
+        self.mac_to_port[switch_id][src] = in_port
 
-        if dst in self.mac_to_port[dpid]:
-            out_port = self.mac_to_port[dpid][dst]
+        if dst in self.mac_to_port[switch_id]:
+            out_port = self.mac_to_port[switch_id][dst]
         else:
             out_port = ofproto.OFPP_FLOOD
 
