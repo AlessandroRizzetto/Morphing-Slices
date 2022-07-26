@@ -98,16 +98,3 @@ class RingTopo(app_manager.RyuApp):
                                   data=msg.data)
         datapath.send_msg(out)
 
-        '''
-        mininet> pingall
-        *** Ping: testing ping reachability
-        h1 -> h2 h3 h4 h5 X X X
-        h2 -> h1 h3 h4 h5 X X X
-        h3 -> h1 h2 h4 h5 X X X
-        h4 -> h1 h2 h3 h5 X X X
-        h5 -> h1 h2 h3 h4 X X X
-        h6 -> X X X X X X X
-        h7 -> X X X X X X X
-        h8 -> X X X X X X X
-        *** Results: 64% dropped (20/56 received)
-        '''

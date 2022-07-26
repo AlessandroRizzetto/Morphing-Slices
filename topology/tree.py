@@ -92,8 +92,6 @@ class TreeTopo(app_manager.RyuApp):
             else:
                 out_port = ofproto.OFPP_FLOOD
 
-            else:
-                out_port = ofproto.OFPP_FLOOD
 
 
 
