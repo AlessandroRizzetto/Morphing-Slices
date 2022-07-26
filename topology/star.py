@@ -9,10 +9,10 @@ from ryu.lib.packet import ethernet
 class StarTopo(app_manager.RyuApp):
     avoid_dst =['ff:ff:ff:ff:ff:ff', '33:33:00:00:00:02']
     OFP_VERSIONS = [ofproto_v1_3.OFP_VERSION]
-
+    cutted = [6,7]
     def __init__(self, *args, **kwargs):
         super(StarTopo, self).__init__(*args, **kwargs)
-        
+
         self.mac_to_port = {}
 
     @set_ev_cls(ofp_event.EventOFPSwitchFeatures, CONFIG_DISPATCHER)
@@ -31,7 +31,7 @@ class StarTopo(app_manager.RyuApp):
         ofproto = datapath.ofproto
         parser = datapath.ofproto_parser
 
-        
+
         inst = [parser.OFPInstructionActions(ofproto.OFPIT_APPLY_ACTIONS,
                                              actions)]
         mod = parser.OFPFlowMod(datapath=datapath, priority=priority,
@@ -47,7 +47,7 @@ class StarTopo(app_manager.RyuApp):
 
         # SWITCH ID.
         switch_id = datapath.id
-        
+
         self.mac_to_port.setdefault(switch_id, {})
 
         # packet analysis
@@ -60,7 +60,7 @@ class StarTopo(app_manager.RyuApp):
         #print(vars(msg))
         in_port = msg.match['in_port']
         #out_port = msg.match['out_port']
-        
+
 
         for x in datapath.ports:
             conf=datapath.ports[x].config
@@ -68,13 +68,13 @@ class StarTopo(app_manager.RyuApp):
 
         if(dst not in self.avoid_dst):
             self.logger.info("input port: P%s IN SWITCH S%s looking for %s",in_port,switch_id,dst)
-        
+
         # learn a mac address to avoid FLOOD next time.
         self.mac_to_port[switch_id][src] = in_port
 
         # if the destination mac address is already learned,
         # decide which port to output the packet, otherwise FLOOD.
-        if(switch_id == 7 or switch_id==6):
+        if(switch_id in self.cutted):
             return
 
         if dst in self.mac_to_port[switch_id]:
@@ -83,7 +83,7 @@ class StarTopo(app_manager.RyuApp):
             out_port = ofproto.OFPP_FLOOD
 
 
-        
+
         actions = [parser.OFPActionOutput(out_port)]
 
         # install a flow to avoid packet_in next time.
@@ -97,4 +97,3 @@ class StarTopo(app_manager.RyuApp):
                                   in_port=in_port, actions=actions,
                                   data=msg.data)
         datapath.send_msg(out)
-

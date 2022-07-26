@@ -74,7 +74,7 @@ class RingTopo(app_manager.RyuApp):
         self.mac_to_port[switch_id][src] = in_port
 
 
-        if(switch_id in cutted):#cutted branch, drop
+        if(switch_id in self.cutted):#cutted branch, drop
             return
 
 

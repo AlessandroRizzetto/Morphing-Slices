@@ -86,7 +86,7 @@ class TreeTopo(app_manager.RyuApp):
                 out_port = self.mac_to_port[switch_id][dst]
             else:
                 out_port = 4
-        elif(switch_id in cutted):#removed branches, dropping the packet
+        elif(switch_id in self.cutted):#removed branches, dropping the packet
             return
         else:#if present send otherwise flood
             if dst in self.mac_to_port[switch_id]:
