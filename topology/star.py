@@ -9,7 +9,7 @@ from ryu.lib.packet import ethernet
 class StarTopo(app_manager.RyuApp):
     avoid_dst =['ff:ff:ff:ff:ff:ff', '33:33:00:00:00:02']
     OFP_VERSIONS = [ofproto_v1_3.OFP_VERSION]
-    cutted = [6,7]
+    cutted = [2,3,6]
     def __init__(self, *args, **kwargs):
         super(StarTopo, self).__init__(*args, **kwargs)
 
