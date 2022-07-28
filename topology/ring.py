@@ -68,9 +68,10 @@ class RingTopo(app_manager.RyuApp):
         for x in datapath.ports:
             conf=datapath.ports[x].config
             break
-
+        
+        destinazione = dst.split(':')[5][1]
         if(dst not in self.avoid_dst):
-            self.logger.info("input port: P%s IN SWITCH S%s looking for %s",in_port,switch_id,dst)
+            self.logger.info("input port: P%s IN SWITCH S%s looking for h%s",in_port,switch_id,destinazione)
         
         # learn a mac address to avoid FLOOD next time.
         self.mac_to_port[switch_id][src] = in_port
@@ -86,10 +87,16 @@ class RingTopo(app_manager.RyuApp):
             else:
                 out_port = 2
         elif(switch_id == 2 and in_port == 2):#same concept but backwards
-            if dst in self.mac_to_port[switch_id]:
-                out_port = self.mac_to_port[switch_id][dst]
+            if destinazione !=2 :
+                if dst in self.mac_to_port[switch_id]:
+                    out_port = self.mac_to_port[switch_id][dst]
+                else:
+                    out_port = 2
             else:
-                out_port = 1
+                if dst in self.mac_to_port[switch_id]:
+                    out_port = self.mac_to_port[switch_id][dst]
+                else:
+                    out_port = 1
         elif(switch_id == 1 and in_port == 1):#same concept but backwards
             if dst in self.mac_to_port[switch_id]:
                 out_port = self.mac_to_port[switch_id][dst]
@@ -118,10 +125,16 @@ class RingTopo(app_manager.RyuApp):
             else:
                 out_port = 1
         elif(switch_id == 4 and in_port == 2):#same concept but backwards
-            if dst in self.mac_to_port[switch_id]:
-                out_port = self.mac_to_port[switch_id][dst]
+            if destinazione !=4 :
+                if dst in self.mac_to_port[switch_id]:
+                    out_port = self.mac_to_port[switch_id][dst]
+                else:
+                    out_port = 2
             else:
-                out_port = 1
+                if dst in self.mac_to_port[switch_id]:
+                    out_port = self.mac_to_port[switch_id][dst]
+                else:
+                    out_port = 1
         
         
         #terzo arco
@@ -136,10 +149,16 @@ class RingTopo(app_manager.RyuApp):
             else:
                 out_port = 2
         elif(switch_id == 5 and in_port == 2):#same concept but backwards
-            if dst in self.mac_to_port[switch_id]:
-                out_port = self.mac_to_port[switch_id][dst]
+            if destinazione !=5 :
+                if dst in self.mac_to_port[switch_id]:
+                    out_port = self.mac_to_port[switch_id][dst]
+                else:
+                    out_port = 2
             else:
-                out_port = 1
+                if dst in self.mac_to_port[switch_id]:
+                    out_port = self.mac_to_port[switch_id][dst]
+                else:
+                    out_port = 1
 
 
         #quarto arco
@@ -164,10 +183,16 @@ class RingTopo(app_manager.RyuApp):
             else:
                 out_port = 3
         elif(switch_id == 3 and in_port == 2):#same concept but backwards
-            if dst in self.mac_to_port[switch_id]:
-                out_port = self.mac_to_port[switch_id][dst]
+            if destinazione !=3 :
+                if dst in self.mac_to_port[switch_id]:
+                    out_port = self.mac_to_port[switch_id][dst]
+                else:
+                    out_port = 2
             else:
-                out_port = 1
+                if dst in self.mac_to_port[switch_id]:
+                    out_port = self.mac_to_port[switch_id][dst]
+                else:
+                    out_port = 1
 
 
          #quinto arco
@@ -182,10 +207,16 @@ class RingTopo(app_manager.RyuApp):
             else:
                 out_port = 1
         elif(switch_id == 1 and in_port == 2):#same concept but backwards
-            if dst in self.mac_to_port[switch_id]:
-                out_port = self.mac_to_port[switch_id][dst]
+            if destinazione !=1 :
+                if dst in self.mac_to_port[switch_id]:
+                    out_port = self.mac_to_port[switch_id][dst]
+                else:
+                    out_port = 2
             else:
-                out_port = 1
+                if dst in self.mac_to_port[switch_id]:
+                    out_port = self.mac_to_port[switch_id][dst]
+                else:
+                    out_port = 1
     
         #taglio il resto
         else:
