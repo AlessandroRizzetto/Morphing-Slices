@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from mininet.topo import Topo
 from mininet.net import Mininet
 from mininet.log import setLogLevel
@@ -35,8 +36,12 @@ class RoutingTopo(Topo):
         self.addLink("h8", "s7", **host_link_config)
 
         # Add switch links        
+        self.addLink("s1", "s2", **host_link_config)
+        self.addLink("s1", "s3", **host_link_config)
         self.addLink("s1", "s9", **host_link_config)
+        self.addLink("s2", "s4", **host_link_config)
         self.addLink("s2", "s9", **host_link_config)
+        self.addLink("s3", "s5", **host_link_config)
         self.addLink("s3", "s9", **host_link_config)
         self.addLink("s8", "s4", **host_link_config)
         self.addLink("s8", "s5", **host_link_config)

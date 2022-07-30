@@ -7,7 +7,7 @@ from ryu.lib.packet import packet
 from ryu.lib.packet import ethernet
 
 class TreeTopo(app_manager.RyuApp):
-    avoid_dst =['ff:ff:ff:ff:ff:ff', '33:33:00:00:00:02']
+    avoid_dst =['ff:ff:ff:ff:ff:ff', '33:33:00:00:00:02','33:33:00:00:00:16']
     OFP_VERSIONS = [ofproto_v1_3.OFP_VERSION]
     cutted =[2,3]
     def __init__(self, *args, **kwargs):

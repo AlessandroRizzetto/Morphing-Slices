@@ -148,3 +148,4 @@ pingall ring.py
 [Mereuta Mihaela - 209035](https://github.com/plsmiha)
 
 [Rizzetto Alessandro - 209783](https://github.com/elrich2610)
+>>>>>>> main
