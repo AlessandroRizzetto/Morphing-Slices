@@ -7,14 +7,28 @@ from ryu.lib.packet import packet
 from ryu.lib.packet import ethernet
 
 class RingTopo(app_manager.RyuApp):
-    avoid_dst =['ff:ff:ff:ff:ff:ff', '33:33:00:00:00:02','33:33:00:00:00:16']
-    cutted=[6,7]
+    avoid_dst =['ff:ff:ff:ff:ff:ff', '33:33:00:00:00:02']
+    save_dst =['00:00:00:00:00:01','00:00:00:00:00:02','00:00:00:00:00:03','00:00:00:00:00:04','00:00:00:00:00:05','00:00:00:00:00:06']
+    cutted=[9,6,10]
     OFP_VERSIONS = [ofproto_v1_3.OFP_VERSION]
+    pktn=0
 
     def __init__(self, *args, **kwargs):
         super(RingTopo, self).__init__(*args, **kwargs)
         # initialize mac address table.
-        self.mac_to_port = {}
+        self.mac_to_port = {
+                1: {"00:00:00:00:00:01":1},
+                2: {"00:00:00:00:00:02":1},
+                3: {"00:00:00:00:00:03":1},
+                4: {"00:00:00:00:00:04":1},
+                5: {"00:00:00:00:00:05":1},
+                6:{},
+                7:{},
+                8:{},
+                9:{},
+                10:{},
+                11:{}
+                }
     
     #extends switch_fetaures_handler= set_ev_cls(extends switch_fetaures_handler)
     #So whenever you use a decorator, you actually pass a function into another function that returns a new version of it. Then you assign the new function to the original one.
@@ -51,7 +65,6 @@ class RingTopo(app_manager.RyuApp):
         # SWITCH ID.
         switch_id = datapath.id
         
-        self.mac_to_port.setdefault(switch_id, {})
 
         # analyse the received packets using the packet library.
         pkt = packet.Packet(msg.data)
@@ -62,111 +75,54 @@ class RingTopo(app_manager.RyuApp):
         # get the received port number from packet_in message.
         #print(vars(msg))
         in_port = msg.match['in_port']
-        #out_port = msg.match['out_port']
         
-
         for x in datapath.ports:
             conf=datapath.ports[x].config
             break
-        
-        destinazione = dst.split(':')[5][1]
-        if(dst not in self.avoid_dst):
-            self.logger.info("input port: P%s IN SWITCH S%s looking for h%s",in_port,switch_id,destinazione)
-        
-        # learn a mac address to avoid FLOOD next time.
-        self.mac_to_port[switch_id][src] = in_port
 
+        destinazione = dst.split(':')[5][1]
+        if(dst not in self.avoid_dst and switch_id not in self.cutted):
+            self.logger.info("%s> input port: P%s IN SWITCH S%s looking for h%s",self.pktn,in_port,switch_id,destinazione)
+        
 
         # if the destination mac address is already learned,
         # decide which port to output the packet, otherwise FLOOD.
-        
-        #primo arco
-        if(switch_id == 9 and in_port == 1):#se mi arriva da s1 (port 1) -> 
-                out_port = 2
-        elif(switch_id == 2 and in_port == 2):#same concept but backwards
-            if dst == "00:00:00:00:00:02" or dst in self.avoid_dst:
-                out_port = 1
-            else:
-                out_port = 2
-        elif(switch_id == 1 and in_port == 1):#same concept but backwards
-            if dst in self.mac_to_port[switch_id]:
-                out_port = self.mac_to_port[switch_id][dst]
-            else:
-                out_port = 2
 
-        elif(switch_id == 1 and in_port == 1):#same concept but backwards
-                out_port = 2
-        
-        #secondo arco
-        elif(switch_id == 2 and in_port == 1):#same concept but backwards
-                out_port = 2
-        elif(switch_id == 9 and in_port == 2):#same concept but backwards
-                out_port = 4
-        elif(switch_id == 10 and in_port == 2):#same concept but backwards
-                out_port = 1
-        elif(switch_id == 8 and in_port == 4):#same concept but backwards
-                out_port = 1
-        elif(switch_id == 4 and in_port == 2):#same concept but backwards
-            if dst == "00:00:00:00:00:04" or dst in self.avoid_dst:
-                out_port = 1
-            else:
-                out_port = 2
-            else:
-                if dst in self.mac_to_port[switch_id]:
-                    out_port = self.mac_to_port[switch_id][dst]
-                else:
-                    out_port = 1
-        
-        #terzo arco
-        elif(switch_id == 4 and in_port == 1):#same concept but backwards
-                out_port = 2
-        elif(switch_id == 8 and in_port == 1):#same concept but backwards
-                out_port = 2
-        elif(switch_id == 5 and in_port == 2):#same concept but backwards
-            if dst == "00:00:00:00:00:05" or dst in self.avoid_dst:
-                out_port = 1
-            else:
-                out_port = 2
-
-        #quarto arco
-        elif(switch_id == 5 and in_port == 1):#same concept but backwards
-                out_port = 2
-        elif(switch_id == 8 and in_port == 2):#same concept but backwards
-                out_port = 4
-        elif(switch_id == 10 and in_port == 1):#same concept but backwards
-                out_port = 2
-        elif(switch_id == 9 and in_port == 4):#same concept but backwards
-                out_port = 3
-        elif(switch_id == 3 and in_port == 2):#same concept but backwards
-            if dst == "00:00:00:00:00:03" or dst in self.avoid_dst:
-                out_port = 1
-            else:
-                out_port = 2
-
-         #quinto arco
-        elif(switch_id == 3 and in_port == 1):#same concept but backwards
-                out_port = 2
-        elif(switch_id == 9 and in_port == 3):#same concept but backwards
-                out_port = 1
-        elif(switch_id == 1 and in_port == 2):#same concept but backwards
-            if dst == "00:00:00:00:00:01" or dst in self.avoid_dst:
-                out_port = 1
-            else:
-                out_port = 2
-        #taglio il resto
+        s= switch_id
+        p= in_port
+        trovato=False
+        if(s in self.cutted):
+            return
+        elif(dst in self.mac_to_port[s]):
+            self.logger.info("============ ARRIVATO %s =========",s)
+            out_port = self.mac_to_port[s][dst]
+            trovato=True 
+        elif(s==1 and p==1 and trovato==False):
+            out_port=2
+        elif(s==2 and p==1 and trovato==False):
+            out_port=3
+        elif(s==4 and p==1 and trovato ==False):
+            out_port=3
+        elif(s==5 and p==1 and trovato== False):
+            out_port=2
+        elif(s==3 and p==1 and trovato==False):
+            out_port=2
+        elif(trovato==False):
+            out_port = ofproto.OFPP_FLOOD
+            #return
         else:
             return
-        
+        self.pktn+=1
 
 
         # construct action list.
         actions = [parser.OFPActionOutput(out_port)]
+        
 
         # install a flow to avoid packet_in next time.
-        if out_port != ofproto.OFPP_FLOOD:
+        if out_port != ofproto.OFPP_FLOOD and dst in self.save_dst:
             match = parser.OFPMatch(in_port=in_port, eth_dst=dst)
             self.add_flow(datapath, 1, match, actions)
-
         # construct packet_out message and send it.
         out = parser.OFPPacketOut(datapath=datapath,
                                   buffer_id=ofproto.OFP_NO_BUFFER,
@@ -174,16 +130,3 @@ class RingTopo(app_manager.RyuApp):
                                   data=msg.data)
         datapath.send_msg(out)
 
-        '''
-        mininet> pingall
-        *** Ping: testing ping reachability
-        h1 -> h2 h3 h4 h5 X X X
-        h2 -> h1 h3 h4 h5 X X X
-        h3 -> h1 h2 h4 h5 X X X
-        h4 -> h1 h2 h3 h5 X X X
-        h5 -> h1 h2 h3 h4 X X X
-        h6 -> X X X X X X X
-        h7 -> X X X X X X X
-        h8 -> X X X X X X X
-        *** Results: 64% dropped (20/56 received)
-        '''
