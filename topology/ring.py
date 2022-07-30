@@ -9,7 +9,7 @@ from ryu.lib.packet import ethernet
 class RingTopo(app_manager.RyuApp):
     avoid_dst =['ff:ff:ff:ff:ff:ff', '33:33:00:00:00:02']
     save_dst =['00:00:00:00:00:01','00:00:00:00:00:02','00:00:00:00:00:03','00:00:00:00:00:04','00:00:00:00:00:05','00:00:00:00:00:06']
-    cutted=[9,6,10]
+    cutted=[9,6,7,10]
     OFP_VERSIONS = [ofproto_v1_3.OFP_VERSION]
     pktn=0
 

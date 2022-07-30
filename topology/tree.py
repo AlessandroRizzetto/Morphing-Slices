@@ -8,6 +8,7 @@ from ryu.lib.packet import ethernet
 
 class TreeTopo(app_manager.RyuApp):
     avoid_dst =['ff:ff:ff:ff:ff:ff', '33:33:00:00:00:02','33:33:00:00:00:16']
+    save_dst =['00:00:00:00:00:01','00:00:00:00:00:02','00:00:00:00:00:03','00:00:00:00:00:04' ,'00:00:00:00:00:05' ,'00:00:00:00:00:06' ,'00:00:00:00:00:07' ,'00:00:00:00:00:08' ]
     OFP_VERSIONS = [ofproto_v1_3.OFP_VERSION]
     cutted =[2,3]
     def __init__(self, *args, **kwargs):
@@ -124,7 +125,7 @@ class TreeTopo(app_manager.RyuApp):
         actions = [parser.OFPActionOutput(out_port)]
 
         # install a flow to avoid packet_in next time.
-        if out_port != ofproto.OFPP_FLOOD:
+        if out_port != ofproto.OFPP_FLOOD and  dst in self.save_dst:
             match = parser.OFPMatch(in_port=in_port, eth_dst=dst)
             self.add_flow(datapath, 1, match, actions)
 
