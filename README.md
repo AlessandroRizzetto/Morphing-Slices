@@ -40,11 +40,11 @@ The following schema rappresent our base topology built with MININET and the vir
 Below a table rappresenting the ports/device connection of every switch
 |HOST|Port 1|Port 2|Port 3|Port 4|
 |:--|:--:|:--:|:--:|:--:|
-**S1**|  H1  | S2  | S3	    |S4
+**S1**|  H1  | S2  | S3	    |S9
 **S2**|  H2	 | S1	 | 	S4  |S9
 **S3**|  H3	 | S1	 | S5 |S9	
-**S4**|  H4	 | S2	 | 	 S8  |-
-**S5**|  H5	 | S3	 | 	  -  |-
+**S4**|  H4	 | S2	 | S8  |-
+**S5**|  H5	 | S3	 | 	S8  |-
 **S6**|  H6	 | S7	 | 	S8    |-
 **S7**|  H7	 | H8	 | S6 | -
 **S8**|  S4 | 	S5 | 	 S6   | S10
@@ -76,6 +76,7 @@ sudo python3 baseTopology.py
 ### PoC
 Using the "pingall" command we'll see how our packets won't follow the base topology but will run trough the path 
 choosen from our controller AKA our controller has modified the logical topology.
+Another way for checking the actual topology is to use the script "check.sh" which simply dumps the flow for each switch.
 
 ##### FullOpen:
 The expected result for the basetopology with all the switches in OFPP_FLOOD mode is the following:
@@ -95,9 +96,9 @@ h8 -> h1 h2 h3 h4 h5 h6 h7
 ```
 
 ##### Tree:
-We are cutting everything that is connected to the swtich 2 and 3 for building a treeTopology (Horizontaly oriented).
-If we want we can add more device (switches and hosts) to our topology and they will all act accordingly with our controller, answering if they're not connected ouside of the (single) path running trough the switch number 9: S1-S9-S10-SN
-Or, in a easier way, if they are not cutted off from the topology by some red line. 
+We are cutting everything that is connected to the swtich 2 and 3 for building a treeTopology (Horizontaly oriented from left to right, root is S1).
+If we want, we can add more deviceS (switches and hosts) to our topology and they will all act accordingly with our controller, answering if they're not connected outside of the (single) path running trough the switches number 9: S1-S9-S10-SN
+
 ```txt
 mininet> pingall
 *** Ping: testing ping reachability
@@ -112,6 +113,49 @@ h8 -> h1 X X h4 h5 h6 h7
 *** Results: 46% dropped (30/56 received)
 ```
 
+Dump-flow (only affected switches are reported, the others are empty as they should).
+```
+===== S1 =====
+
+[...] dl_dst=00:00:00:00:00:01 actions=output:"s1-eth1"
+[...] dl_dst=00:00:00:00:00:04 actions=output:"s1-eth4"
+[...] dl_dst=00:00:00:00:00:05 actions=output:"s1-eth4"
+[...] dl_dst=00:00:00:00:00:06 actions=output:"s1-eth4"
+[...] dl_dst=00:00:00:00:00:07 actions=output:"s1-eth4"
+[...] dl_dst=00:00:00:00:00:08 actions=output:"s1-eth4"
+
+ ===== S8 =====
+
+[...] dl_dst=00:00:00:00:00:04 actions=output:"s8-eth1"
+[...] dl_dst=00:00:00:00:00:05 actions=output:"s8-eth2"
+[...] dl_dst=00:00:00:00:00:06 actions=output:"s8-eth3"
+[...] dl_dst=00:00:00:00:00:07 actions=output:"s8-eth3"
+[...] dl_dst=00:00:00:00:00:08 actions=output:"s8-eth3"
+
+ ===== S9 =====
+
+[...] dl_dst=00:00:00:00:00:01 actions=output:"s9-eth1"
+[...] dl_dst=00:00:00:00:00:04 actions=output:"s9-eth4"
+[...] dl_dst=00:00:00:00:00:05 actions=output:"s9-eth4"
+[...] dl_dst=00:00:00:00:00:06 actions=output:"s9-eth4"
+[...] dl_dst=00:00:00:00:00:07 actions=output:"s9-eth4"
+[...] dl_dst=00:00:00:00:00:08 actions=output:"s9-eth4"
+
+ ===== S10 =====
+
+[...] dl_dst=00:00:00:00:00:01 actions=output:"s10-eth2"
+[...] dl_dst=00:00:00:00:00:04 actions=output:"s10-eth1"
+[...] dl_dst=00:00:00:00:00:05 actions=output:"s10-eth1"
+[...] dl_dst=00:00:00:00:00:06 actions=output:"s10-eth1"
+[...] dl_dst=00:00:00:00:00:07 actions=output:"s10-eth1"
+[...] dl_dst=00:00:00:00:00:08 actions=output:"s10-eth1"
+[...] dl_dst=00:00:00:00:00:04 actions=output:"s10-eth1"
+[...] dl_dst=00:00:00:00:00:05 actions=output:"s10-eth1"
+[...] dl_dst=00:00:00:00:00:06 actions=output:"s10-eth1"
+[...] dl_dst=00:00:00:00:00:07 actions=output:"s10-eth1"
+[...] dl_dst=00:00:00:00:00:08 actions=output:"s10-eth1"
+
+```
 ##### Star:
 explanation of the cutted branches and why it should result like this
 ```txt
@@ -119,27 +163,104 @@ pingall star.py
 ```
 
 ##### Linear:
-Based on the Tree topology simply removing the connection between the S6 and the S7 we'll be able to modify our topology from the Tree one to the Linear one.
+A linear topology between the host 1-2-4 is the only connection preserved from the base topology.
+Those 3 hosts can ping eachother trough the channel S1-S2-S4.
 ```txt
 mininet> pingall
 *** Ping: testing ping reachability
-h1 -> X X h4 h5 h6 X X
-h2 -> X X X X X X X
+h1 -> h2 X h4 X X X X
+h2 -> h1 X h4 X X X X
 h3 -> X X X X X X X
-h4 -> h1 X X h5 h6 X X
-h5 -> h1 X X h4 h6 X X
-h6 -> h1 X X h4 h5 X X
+h4 -> h1 h2 X X X X X
+h5 -> X X X X X X X
+h6 -> X X X X X X X
 h7 -> X X X X X X X
 h8 -> X X X X X X X
-*** Results: 78% dropped (12/56 received)
+*** Results: 89% dropped (6/56 received)
+```
+Dump-flow (only affected switches are reported, the others are empty as they should).
+```
+===== S1 =====
+
+[...] dl_dst=00:00:00:00:00:01 actions=output:"s1-eth1"
+[...] dl_dst=00:00:00:00:00:02 actions=output:"s1-eth2"
+[...] dl_dst=00:00:00:00:00:04 actions=output:"s1-eth2"
+
+===== S2 =====
+
+[...] dl_dst=00:00:00:00:00:01 actions=output:"s2-eth2"
+[...] dl_dst=00:00:00:00:00:02 actions=output:"s2-eth1"
+[...] dl_dst=00:00:00:00:00:01 actions=output:"s2-eth2"
+[...] dl_dst=00:00:00:00:00:04 actions=output:"s2-eth3"
+[...] dl_dst=00:00:00:00:00:02 actions=output:"s2-eth1"
+[...] dl_dst=00:00:00:00:00:04 actions=output:"s2-eth3"
+
+===== S4 =====
+
+[...] dl_dst=00:00:00:00:00:01 actions=output:"s4-eth2"
+[...] dl_dst=00:00:00:00:00:04 actions=output:"s4-eth1"
+[...] dl_dst=00:00:00:00:00:02 actions=output:"s4-eth2"
+
 ```
 
 ##### Ring:
-explanation of the cutted branches and why it should result like this
+This is an oriented topology so every packet can only travel in one direction.
+If the H1 wants to ping H3 it cannot simply go S1->S3, it must follow the full path S1->S2->S4->S5->S3 (as proven in the dump-flow output where only one dst is on a different port which is the HOST connected to that switch).
 ```txt
-pingall ring.py
+mininet> pingall
+*** Ping: testing ping reachability
+h1 -> h2 h3 h4 h5 X X X
+h2 -> h1 h3 h4 h5 X X X
+h3 -> h1 h2 h4 h5 X X X
+h4 -> h1 h2 h3 h5 X X X
+h5 -> h1 h2 h3 h4 X X X
+h6 -> X X X X X X X
+h7 -> X X X X X X X
+h8 -> X X X X X X X
 ```
+Dump-flow (only affected switches are reported, the others are empty as they should).
+```
+ ===== S1 =====
 
+[...] dl_dst=00:00:00:00:00:01 actions=output:"s1-eth1"
+[...] dl_dst=00:00:00:00:00:02 actions=output:"s1-eth2"
+[...] dl_dst=00:00:00:00:00:03 actions=output:"s1-eth2"
+[...] dl_dst=00:00:00:00:00:04 actions=output:"s1-eth2"
+[...] dl_dst=00:00:00:00:00:05 actions=output:"s1-eth2"
+
+===== S2 =====
+
+[...] dl_dst=00:00:00:00:00:01 actions=output:"s2-eth3"
+[...] dl_dst=00:00:00:00:00:02 actions=output:"s2-eth1"
+[...] dl_dst=00:00:00:00:00:03 actions=output:"s2-eth3"
+[...] dl_dst=00:00:00:00:00:04 actions=output:"s2-eth3"
+[...] dl_dst=00:00:00:00:00:05 actions=output:"s2-eth3"
+
+===== S3 =====
+
+[...] dl_dst=00:00:00:00:00:01 actions=output:"s3-eth2"
+[...] dl_dst=00:00:00:00:00:03 actions=output:"s3-eth1"
+[...] dl_dst=00:00:00:00:00:02 actions=output:"s3-eth2"
+[...] dl_dst=00:00:00:00:00:04 actions=output:"s3-eth2"
+[...] dl_dst=00:00:00:00:00:05 actions=output:"s3-eth2"
+
+===== S4 =====
+
+[...] dl_dst=00:00:00:00:00:01 actions=output:"s4-eth3"
+[...] dl_dst=00:00:00:00:00:04 actions=output:"s4-eth1"
+[...] dl_dst=00:00:00:00:00:02 actions=output:"s4-eth3"
+[...] dl_dst=00:00:00:00:00:03 actions=output:"s4-eth3"
+[...] dl_dst=00:00:00:00:00:05 actions=output:"s4-eth3"
+
+ ===== S5 =====
+
+[...] dl_dst=00:00:00:00:00:01 actions=output:"s5-eth2"
+[...] dl_dst=00:00:00:00:00:05 actions=output:"s5-eth1"
+[...] dl_dst=00:00:00:00:00:02 actions=output:"s5-eth2"
+[...] dl_dst=00:00:00:00:00:03 actions=output:"s5-eth2"
+[...] dl_dst=00:00:00:00:00:04 actions=output:"s5-eth2"
+
+```
 
 
 ### Group-Members
@@ -148,4 +269,3 @@ pingall ring.py
 [Mereuta Mihaela - 209035](https://github.com/plsmiha)
 
 [Rizzetto Alessandro - 209783](https://github.com/elrich2610)
->>>>>>> main
