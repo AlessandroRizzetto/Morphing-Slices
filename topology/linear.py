@@ -106,3 +106,4 @@ class LinearTopo(app_manager.RyuApp):
                                   in_port=in_port, actions=actions,
                                   data=msg.data)
         datapath.send_msg(out)
+            self.add_flow(datapath, 1, match, actions)
