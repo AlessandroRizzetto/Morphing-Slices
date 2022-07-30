@@ -80,15 +80,15 @@ class RingTopo(app_manager.RyuApp):
         # if the destination mac address is already learned,
         # decide which port to output the packet, otherwise FLOOD.
         
-        if(switch_id == 1 and in_port == 3):#if already mapped follow that flow otherwise port1 
+        if(switch_id == 1 and in_port == 2):#if already mapped follow that flow otherwise port1 
             return
-        elif(switch_id == 2 and in_port == 1):
+        elif(switch_id == 2 and in_port == 3):
             return
-        elif(switch_id == 4 and in_port == 2):
+        elif(switch_id == 4 and in_port == 3):
             return
-        elif(switch_id == 8 and in_port == 4):
+        elif(switch_id == 8 and in_port == 2):
             return
-        elif(switch_id == 3 and in_port == 8):
+        elif(switch_id == 3 and in_port == 2):
             return
         elif(switch_id in self.cutted):#removed branches, dropping the packet
             return
