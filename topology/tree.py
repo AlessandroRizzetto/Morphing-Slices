@@ -66,7 +66,7 @@ class TreeTopo(app_manager.RyuApp):
             conf=datapath.ports[x].config
             break
 
-        if(dst not in self.avoid_dst):
+        if(dst not in self.avoid_dst and switch_id not in self.cutted):
             self.logger.info("input port: P%s IN SWITCH S%s looking for %s",in_port,switch_id,dst)
 
         # learn a mac address to avoid FLOOD next time.
@@ -76,23 +76,46 @@ class TreeTopo(app_manager.RyuApp):
         # decide which port to output the packet, otherwise FLOOD.
         # if the destination mac address is already learned,
         # decide which port to output the packet, otherwise FLOOD.
-        if(switch_id == 9 and in_port == 4):#if already mapped follow that flow otherwise port1 (it's always port 1 but meh)
-            if dst in self.mac_to_port[switch_id]:
-                out_port = self.mac_to_port[switch_id][dst]
-            else:
-                out_port = 1
-        elif(switch_id == 9 and in_port == 1):#same concept but backwards
+        if(switch_id in self.cutted):
+            return
+        
+        if(switch_id == 1 and in_port == 1):#s1->s9->s10
             if dst in self.mac_to_port[switch_id]:
                 out_port = self.mac_to_port[switch_id][dst]
             else:
                 out_port = 4
-        elif(switch_id in self.cutted):#removed branches, dropping the packet
-            return
-        else:#if present send otherwise flood
+        elif(switch_id == 1 and in_port == 4):
+            if dst in self.mac_to_port[switch_id]:
+                out_port = self.mac_to_port[switch_id][dst]
+            else:
+                out_port = 1
+        elif(switch_id == 9 and in_port == 1):#s10->s9->s1
+            if dst in self.mac_to_port[switch_id]:
+                out_port = self.mac_to_port[switch_id][dst]
+            else:
+                out_port = 4
+        elif(switch_id == 9 and in_port == 4):
+            if dst in self.mac_to_port[switch_id]:
+                out_port = self.mac_to_port[switch_id][dst]
+            else:
+                out_port = 1
+        elif(switch_id == 10 and in_port == 1):#s9<->s10<->s8
+            if dst in self.mac_to_port[switch_id]:
+                out_port = self.mac_to_port[switch_id][dst]
+            else:
+                out_port = 2
+        elif(switch_id == 10 and in_port == 2):
+            if dst in self.mac_to_port[switch_id]:
+                out_port = self.mac_to_port[switch_id][dst]
+            else:
+                out_port = 1
+        elif(switch_id == 8 and in_port == 4):
             if dst in self.mac_to_port[switch_id]:
                 out_port = self.mac_to_port[switch_id][dst]
             else:
                 out_port = ofproto.OFPP_FLOOD
+        else:
+            out_port = ofproto.OFPP_FLOOD
 
 
 
