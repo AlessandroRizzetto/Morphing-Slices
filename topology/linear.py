@@ -7,9 +7,9 @@ from ryu.lib.packet import packet
 from ryu.lib.packet import ethernet
 
 class LinearTopo(app_manager.RyuApp):
-    avoid_dst =['ff:ff:ff:ff:ff:ff', '33:33:00:00:00:02']
+    avoid_dst =['ff:ff:ff:ff:ff:ff', '33:33:00:00:00:02','33:33:00:00:00:16']
     OFP_VERSIONS = [ofproto_v1_3.OFP_VERSION]
-    cutted =[2,3,7]
+    cutted =[3,9,10,6,7]
     def __init__(self, *args, **kwargs):
         super(LinearTopo, self).__init__(*args, **kwargs)
 
@@ -65,7 +65,7 @@ class LinearTopo(app_manager.RyuApp):
             conf=datapath.ports[x].config
             break
 
-        if(dst not in self.avoid_dst):
+        if(dst not in self.avoid_dst and (switch_id not in self.cutted)):
             self.logger.info("input port: P%s IN SWITCH S%s looking for %s",in_port,switch_id,dst)
 
         # learn a mac address to avoid FLOOD next time.
@@ -73,6 +73,12 @@ class LinearTopo(app_manager.RyuApp):
 
         # if the destination mac address is already learned,
         # decide which port to output the packet, otherwise FLOOD.
+        if(switch_id in self.cutted):
+            return
+        else:
+            out_port = ofproto.OFPP_FLOOD
+
+        '''
         if(switch_id == 9 and in_port == 4):#if already mapped follow that flow otherwise port1 (it's always port 1 but meh)
             if dst in self.mac_to_port[switch_id]:
                 out_port = self.mac_to_port[switch_id][dst]
@@ -90,7 +96,7 @@ class LinearTopo(app_manager.RyuApp):
                 out_port = self.mac_to_port[switch_id][dst]
             else:
                 out_port = ofproto.OFPP_FLOOD
-
+        '''
 
 
         actions = [parser.OFPActionOutput(out_port)]
@@ -106,3 +112,4 @@ class LinearTopo(app_manager.RyuApp):
                                   in_port=in_port, actions=actions,
                                   data=msg.data)
         datapath.send_msg(out)
+        self.add_flow(datapath, 1, match, actions)

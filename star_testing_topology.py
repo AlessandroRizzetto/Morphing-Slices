@@ -35,12 +35,8 @@ class RoutingTopo(Topo):
         self.addLink("h8", "s7", **host_link_config)
 
         # Add switch links        
-        self.addLink("s1", "s2", **host_link_config)
-        self.addLink("s1", "s3", **host_link_config)
         self.addLink("s1", "s9", **host_link_config)
-        self.addLink("s2", "s4", **host_link_config)
         self.addLink("s2", "s9", **host_link_config)
-        self.addLink("s3", "s5", **host_link_config)
         self.addLink("s3", "s9", **host_link_config)
         self.addLink("s8", "s4", **host_link_config)
         self.addLink("s8", "s5", **host_link_config)
@@ -49,22 +45,20 @@ class RoutingTopo(Topo):
         self.addLink("s10", "s8", **host_link_config)
         self.addLink("s9", "s10", **host_link_config)
 
+        #adding random host for testing the scalability 
+        for i in range(8,12):
+            host_config = {"switch_id": "00:00:00:00:00:0"+str(i+1)}
+            self.addHost("h%d" % (1+i), **host_config)
+        sconfig = {"switch_id": "00:00:00:00:00:"+str(11)}
+        self.addSwitch("s%d" % (11), **sconfig)
 
+        self.addLink("s8","s11", **host_link_config)
+        self.addLink("h12","s11", **host_link_config)
+        
+        self.addLink("h9","s6", **host_link_config)
+        self.addLink("h11","s1", **host_link_config)
 
-
-        '''
-        h1 - eth0 <-> s1 - eth1  
-        h2 - eth0 <-> s2 - eth1  
-        h3 - eth0 <-> s3 - eth1  
-        h4 - eth0 <-> s4 - eth1  
-        h5 - eth0 <-> s5 - eth1  
-        h6 - eth0 <-> s6 - eth1  
-        s1 - eth2 <-> s6 - eth2  
-        s2 - eth2 <-> s5 - eth2  
-        s3 - eth2 <-> s5 - eth3  
-        s4 - eth2 <-> s6 - eth3  
-        s5 - eth4 <-> s6 - eth4 
-        '''
+        
 
 
 topos = {'RoutingTopo': (lambda: RoutingTopo() )}     
