@@ -9,9 +9,9 @@ from ryu.lib.packet import ethernet
 class StarTopo(app_manager.RyuApp):
     avoid_dst =['ff:ff:ff:ff:ff:ff', '33:33:00:00:00:02','33:33:00:00:00:16']
     OFP_VERSIONS = [ofproto_v1_3.OFP_VERSION]
-    cutted = [6,7]
+    cutted =[2,3,7]
     def __init__(self, *args, **kwargs):
-        super(StarTopo, self).__init__(*args, **kwargs)
+        super(LinearTopo, self).__init__(*args, **kwargs)
 
         self.mac_to_port = {}
 
@@ -57,9 +57,8 @@ class StarTopo(app_manager.RyuApp):
         src = eth_pkt.src
 
         # packet ingress port
-        #print(vars(msg))
         in_port = msg.match['in_port']
-        #out_port = msg.match['out_port']
+
 
 
         for x in datapath.ports:
@@ -74,14 +73,39 @@ class StarTopo(app_manager.RyuApp):
 
         # if the destination mac address is already learned,
         # decide which port to output the packet, otherwise FLOOD.
-        if(switch_id in self.cutted):
+        if(switch_id == 9 and in_port == 4):#if already mapped follow that flow otherwise port1 (it's always port 1 but meh)
+            if dst in self.mac_to_port[switch_id]:
+                out_port = self.mac_to_port[switch_id][dst]
+            else:
+                out_port = 1
+        elif(switch_id == 9 and in_port == 1):#same concept but backwards
+            if dst in self.mac_to_port[switch_id]:
+                out_port = self.mac_to_port[switch_id][dst]
+            else:
+                out_port = 4
+        elif(switch_id in self.cutted):#removed branches, dropping the packet
             return
-
-        if dst in self.mac_to_port[switch_id]:
-            out_port = self.mac_to_port[switch_id][dst]
-        else:
-            out_port = ofproto.OFPP_FLOOD
-
+        else:#if present send otherwise flood
+            if dst in self.mac_to_port[switch_id]:
+                out_port = self.mac_to_port[switch_id][dst]
+            else:
+                out_port = ofproto.OFPP_FLOOD
+        if((switch_id == 1 or switch_id == 4 or switch_id == 5) and in_port != 2):#if already mapped follow that flow otherwise port1 (it's always port 1 but meh)
+            if dst in self.mac_to_port[switch_id]:
+                out_port = self.mac_to_port[switch_id][dst]
+            else:
+                out_port = 2
+        if(switch_id == 6 and in_port != 3):#if already mapped follow that flow otherwise port1 (it's always port 1 but meh)
+            if dst in self.mac_to_port[switch_id]:
+                out_port = self.mac_to_port[switch_id][dst]
+            else:
+                out_port = 3
+        if(switch_id > 8 and in_port != 1):#if already mapped follow that flow otherwise port1 (it's always port 1 but meh)
+            if dst in self.mac_to_port[switch_id]:
+                out_port = self.mac_to_port[switch_id][dst]
+            else:
+                out_port = 1
+        
 
 
         actions = [parser.OFPActionOutput(out_port)]
