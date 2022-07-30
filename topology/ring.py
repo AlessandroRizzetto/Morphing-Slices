@@ -81,111 +81,74 @@ class RingTopo(app_manager.RyuApp):
         
         #primo arco
         if(switch_id == 9 and in_port == 1):#se mi arriva da s1 (port 1) -> 
-            if dst in self.mac_to_port[switch_id]:
-                out_port = self.mac_to_port[switch_id][dst]
-            else:
                 out_port = 2
         elif(switch_id == 2 and in_port == 2):#same concept but backwards
-            if dst in self.mac_to_port[switch_id]:
-                out_port = self.mac_to_port[switch_id][dst]
-            else:
+            if dst == "00:00:00:00:00:02" or dst in self.avoid_dst:
                 out_port = 1
-        elif(switch_id == 1 and in_port == 1):#same concept but backwards
-            if dst in self.mac_to_port[switch_id]:
-                out_port = self.mac_to_port[switch_id][dst]
             else:
+                out_port = 2
+
+        elif(switch_id == 1 and in_port == 1):#same concept but backwards
                 out_port = 2
         
         #secondo arco
         elif(switch_id == 2 and in_port == 1):#same concept but backwards
-            if dst in self.mac_to_port[switch_id]:
-                out_port = self.mac_to_port[switch_id][dst]
-            else:
                 out_port = 2
         elif(switch_id == 9 and in_port == 2):#same concept but backwards
-            if dst in self.mac_to_port[switch_id]:
-                out_port = self.mac_to_port[switch_id][dst]
-            else:
                 out_port = 4
         elif(switch_id == 10 and in_port == 2):#same concept but backwards
-            if dst in self.mac_to_port[switch_id]:
-                out_port = self.mac_to_port[switch_id][dst]
-            else:
                 out_port = 1
         elif(switch_id == 8 and in_port == 4):#same concept but backwards
-            if dst in self.mac_to_port[switch_id]:
-                out_port = self.mac_to_port[switch_id][dst]
-            else:
                 out_port = 1
         elif(switch_id == 4 and in_port == 2):#same concept but backwards
-            if dst in self.mac_to_port[switch_id]:
-                out_port = self.mac_to_port[switch_id][dst]
-            else:
+            if dst == "00:00:00:00:00:04" or dst in self.avoid_dst:
                 out_port = 1
-        
+            else:
+                out_port = 2
+
+
         
         #terzo arco
         elif(switch_id == 4 and in_port == 1):#same concept but backwards
-            if dst in self.mac_to_port[switch_id]:
-                out_port = self.mac_to_port[switch_id][dst]
-            else:
                 out_port = 2
         elif(switch_id == 8 and in_port == 1):#same concept but backwards
-            if dst in self.mac_to_port[switch_id]:
-                out_port = self.mac_to_port[switch_id][dst]
-            else:
                 out_port = 2
         elif(switch_id == 5 and in_port == 2):#same concept but backwards
-            if dst in self.mac_to_port[switch_id]:
-                out_port = self.mac_to_port[switch_id][dst]
-            else:
+            if dst == "00:00:00:00:00:05" or dst in self.avoid_dst:
                 out_port = 1
+            else:
+                out_port = 2
+
+
 
 
         #quarto arco
         elif(switch_id == 5 and in_port == 1):#same concept but backwards
-            if dst in self.mac_to_port[switch_id]:
-                out_port = self.mac_to_port[switch_id][dst]
-            else:
                 out_port = 2
         elif(switch_id == 8 and in_port == 2):#same concept but backwards
-            if dst in self.mac_to_port[switch_id]:
-                out_port = self.mac_to_port[switch_id][dst]
-            else:
                 out_port = 4
         elif(switch_id == 10 and in_port == 1):#same concept but backwards
-            if dst in self.mac_to_port[switch_id]:
-                out_port = self.mac_to_port[switch_id][dst]
-            else:
                 out_port = 2
         elif(switch_id == 9 and in_port == 4):#same concept but backwards
-            if dst in self.mac_to_port[switch_id]:
-                out_port = self.mac_to_port[switch_id][dst]
-            else:
                 out_port = 3
         elif(switch_id == 3 and in_port == 2):#same concept but backwards
-            if dst in self.mac_to_port[switch_id]:
-                out_port = self.mac_to_port[switch_id][dst]
-            else:
+            if dst == "00:00:00:00:00:03" or dst in self.avoid_dst:
                 out_port = 1
+            else:
+                out_port = 2
+
 
 
          #quinto arco
         elif(switch_id == 3 and in_port == 1):#same concept but backwards
-            if dst in self.mac_to_port[switch_id]:
-                out_port = self.mac_to_port[switch_id][dst]
-            else:
                 out_port = 2
         elif(switch_id == 9 and in_port == 3):#same concept but backwards
-            if dst in self.mac_to_port[switch_id]:
-                out_port = self.mac_to_port[switch_id][dst]
-            else:
                 out_port = 1
         elif(switch_id == 1 and in_port == 2):#same concept but backwards
-            if dst in self.mac_to_port[switch_id]:
-                out_port = self.mac_to_port[switch_id][dst]
-            else:
+            if dst == "00:00:00:00:00:01" or dst in self.avoid_dst:
                 out_port = 1
+            else:
+                out_port = 2
     
         #taglio il resto
         else:
