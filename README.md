@@ -43,7 +43,7 @@ Below a table rappresenting the ports/device connection of every switch
 **S1**|  H1  | S2  | S3	    |S4
 **S2**|  H2	 | S1	 | 	S4  |S9
 **S3**|  H3	 | S1	 | S5 |S9	
-**S4**|  H4	 | S2	 | 	  -  |-
+**S4**|  H4	 | S2	 | 	 S8  |-
 **S5**|  H5	 | S3	 | 	  -  |-
 **S6**|  H6	 | S7	 | 	S8    |-
 **S7**|  H7	 | H8	 | S6 | -
