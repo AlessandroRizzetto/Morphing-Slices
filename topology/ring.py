@@ -68,9 +68,10 @@ class RingTopo(app_manager.RyuApp):
         for x in datapath.ports:
             conf=datapath.ports[x].config
             break
-
+        
+        destinazione = dst.split(':')[5][1]
         if(dst not in self.avoid_dst):
-            self.logger.info("input port: P%s IN SWITCH S%s looking for %s",in_port,switch_id,dst)
+            self.logger.info("input port: P%s IN SWITCH S%s looking for h%s",in_port,switch_id,destinazione)
         
         # learn a mac address to avoid FLOOD next time.
         self.mac_to_port[switch_id][src] = in_port
@@ -85,6 +86,11 @@ class RingTopo(app_manager.RyuApp):
         elif(switch_id == 2 and in_port == 2):#same concept but backwards
             if dst == "00:00:00:00:00:02" or dst in self.avoid_dst:
                 out_port = 1
+            else:
+                out_port = 2
+        elif(switch_id == 1 and in_port == 1):#same concept but backwards
+            if dst in self.mac_to_port[switch_id]:
+                out_port = self.mac_to_port[switch_id][dst]
             else:
                 out_port = 2
 
@@ -105,8 +111,11 @@ class RingTopo(app_manager.RyuApp):
                 out_port = 1
             else:
                 out_port = 2
-
-
+            else:
+                if dst in self.mac_to_port[switch_id]:
+                    out_port = self.mac_to_port[switch_id][dst]
+                else:
+                    out_port = 1
         
         #terzo arco
         elif(switch_id == 4 and in_port == 1):#same concept but backwards
@@ -118,9 +127,6 @@ class RingTopo(app_manager.RyuApp):
                 out_port = 1
             else:
                 out_port = 2
-
-
-
 
         #quarto arco
         elif(switch_id == 5 and in_port == 1):#same concept but backwards
@@ -137,8 +143,6 @@ class RingTopo(app_manager.RyuApp):
             else:
                 out_port = 2
 
-
-
          #quinto arco
         elif(switch_id == 3 and in_port == 1):#same concept but backwards
                 out_port = 2
@@ -149,7 +153,6 @@ class RingTopo(app_manager.RyuApp):
                 out_port = 1
             else:
                 out_port = 2
-    
         #taglio il resto
         else:
             return
