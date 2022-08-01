@@ -11,7 +11,7 @@ class StarTopo(app_manager.RyuApp):
     OFP_VERSIONS = [ofproto_v1_3.OFP_VERSION]
     cutted =[2,3,7]
     def __init__(self, *args, **kwargs):
-        super(LinearTopo, self).__init__(*args, **kwargs)
+        super(StarTopo, self).__init__(*args, **kwargs)
 
         self.mac_to_port = {}
 
@@ -73,7 +73,20 @@ class StarTopo(app_manager.RyuApp):
 
         # if the destination mac address is already learned,
         # decide which port to output the packet, otherwise FLOOD.
-        if(switch_id == 9 and in_port == 4):#if already mapped follow that flow otherwise port1 (it's always port 1 but meh)
+        
+        
+        if(switch_id == 1 and in_port == 1):#s1
+            if dst in self.mac_to_port[switch_id]:
+                out_port = self.mac_to_port[switch_id][dst]
+            else:
+                out_port = 4
+        elif(switch_id == 1 and in_port == 4):#same concept but backwards
+            if dst in self.mac_to_port[switch_id]:
+                out_port = self.mac_to_port[switch_id][dst]
+            else:
+                out_port = 1
+###########################
+        if(switch_id == 9 and in_port == 4):#s9
             if dst in self.mac_to_port[switch_id]:
                 out_port = self.mac_to_port[switch_id][dst]
             else:
@@ -83,6 +96,18 @@ class StarTopo(app_manager.RyuApp):
                 out_port = self.mac_to_port[switch_id][dst]
             else:
                 out_port = 4
+###########################
+        if((switch_id == 4 or switch_id == 5) and in_port == 1):#s4
+            if dst in self.mac_to_port[switch_id]:
+                out_port = self.mac_to_port[switch_id][dst]
+            else:
+                out_port = 3
+        #elif((switch_id == 4 or switch_id == 5) and in_port == 3):#same concept but backwards
+         #   if dst in self.mac_to_port[switch_id]:
+             #   out_port = self.mac_to_port[switch_id][dst]
+           # else:
+             #   out_port = 1
+###########################
         elif(switch_id in self.cutted):#removed branches, dropping the packet
             return
         else:#if present send otherwise flood
@@ -90,11 +115,12 @@ class StarTopo(app_manager.RyuApp):
                 out_port = self.mac_to_port[switch_id][dst]
             else:
                 out_port = ofproto.OFPP_FLOOD
-        if((switch_id == 1 or switch_id == 4 or switch_id == 5) and in_port != 2):#if already mapped follow that flow otherwise port1 (it's always port 1 but meh)
-            if dst in self.mac_to_port[switch_id]:
-                out_port = self.mac_to_port[switch_id][dst]
-            else:
-                out_port = 2
+###########################
+        #if((switch_id == 1 or switch_id == 4 or switch_id == 5) and in_port != 2):#if already mapped follow that flow otherwise port1 (it's always port 1 but meh)
+            #if dst in self.mac_to_port[switch_id]:
+            #    out_port = self.mac_to_port[switch_id][dst]
+            #else:
+             #   out_port = 2
         if(switch_id == 6 and in_port != 3):#if already mapped follow that flow otherwise port1 (it's always port 1 but meh)
             if dst in self.mac_to_port[switch_id]:
                 out_port = self.mac_to_port[switch_id][dst]
@@ -105,8 +131,6 @@ class StarTopo(app_manager.RyuApp):
                 out_port = self.mac_to_port[switch_id][dst]
             else:
                 out_port = 1
-        
-
 
         actions = [parser.OFPActionOutput(out_port)]
 
