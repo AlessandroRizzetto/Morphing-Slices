@@ -160,6 +160,17 @@ Dump-flow (only affected switches are reported, the others are empty as they sho
 explanation of the cutted branches and why it should result like this
 ```txt
 pingall star.py
+mininet> pingall
+*** Ping: testing ping reachability
+h1 -> X X h4 h5 h6 X X 
+h2 -> X X X X X X X 
+h3 -> X X X X X X X 
+h4 -> h1 X X h5 h6 X X 
+h5 -> h1 X X h4 h6 X X 
+h6 -> h1 X X h4 h5 X X 
+h7 -> X X X X X X X 
+h8 -> X X X X X X X 
+*** Results: 78% dropped (12/56 received)
 ```
 
 ##### Linear:
