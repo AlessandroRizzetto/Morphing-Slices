@@ -34,7 +34,7 @@ The ones that we've decided to implement are:
 - Ring topology
 
 The following schema rappresent our base topology built with MININET and the virtual topologies made with RYU-Manager, the red lines are used to easily identify the differences between the base and the current topology. 
-![image info](https://raw.githubusercontent.com/elrich2610/Morphing-Slices/a3d48e770b402eb33f813cfb6ddaa3ae23aef37a/topologie.svg
+![image info](https://raw.githubusercontent.com/elrich2610/Morphing-Slices/794837be2352d91d2fe320bb3c286427ff3cf161/base.svg
 )
 
 Below a table rappresenting the ports/device connection of every switch
@@ -99,7 +99,7 @@ h8 -> h1 h2 h3 h4 h5 h6 h7
 We are cutting everything that is connected to the swtich 2 and 3 for building a treeTopology (Horizontaly oriented from left to right, root is S1).
 If we want, we can add more deviceS (switches and hosts) to our topology and they will all act accordingly with our controller, answering if they're not connected outside of the (single) path running trough the switches number 9: S1-S9-S10-SN
 
-![image info](https://raw.githubusercontent.com/elrich2610/Morphing-Slices/a3d48e770b402eb33f813cfb6ddaa3ae23aef37a/tree.svg
+![image info](https://raw.githubusercontent.com/elrich2610/Morphing-Slices/794837be2352d91d2fe320bb3c286427ff3cf161/tree.svg
 )
 
 ```txt
@@ -161,6 +161,9 @@ Dump-flow (only affected switches are reported, the others are empty as they sho
 ```
 ##### Star:
 explanation of the cutted branches and why it should result like this
+
+![image info](https://raw.githubusercontent.com/elrich2610/Morphing-Slices/794837be2352d91d2fe320bb3c286427ff3cf161/star.svg)
+
 ```txt
 pingall star.py
 mininet> pingall
@@ -179,6 +182,10 @@ h8 -> X X X X X X X
 ##### Linear:
 A linear topology between the host 1-2-4 is the only connection preserved from the base topology.
 Those 3 hosts can ping eachother trough the channel S1-S2-S4.
+
+
+![image info](https://raw.githubusercontent.com/elrich2610/Morphing-Slices/794837be2352d91d2fe320bb3c286427ff3cf161/linear.svg
+)
 ```txt
 mininet> pingall
 *** Ping: testing ping reachability
@@ -220,6 +227,10 @@ Dump-flow (only affected switches are reported, the others are empty as they sho
 ##### Ring:
 This is an oriented topology so every packet can only travel in one direction.
 If the H1 wants to ping H3 it cannot simply go S1->S3, it must follow the full path S1->S2->S4->S5->S3 (as proven in the dump-flow output where only one dst is on a different port which is the HOST connected to that switch).
+
+![image info](https://raw.githubusercontent.com/elrich2610/Morphing-Slices/794837be2352d91d2fe320bb3c286427ff3cf161/ring.svg
+)
+
 ```txt
 mininet> pingall
 *** Ping: testing ping reachability
