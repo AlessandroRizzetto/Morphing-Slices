@@ -165,7 +165,6 @@ explanation of the cutted branches and why it should result like this
 ![image info](https://raw.githubusercontent.com/elrich2610/Morphing-Slices/794837be2352d91d2fe320bb3c286427ff3cf161/star.svg)
 
 ```txt
-pingall star.py
 mininet> pingall
 *** Ping: testing ping reachability
 h1 -> X X h4 h5 h6 X X 
