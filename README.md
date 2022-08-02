@@ -177,7 +177,66 @@ h7 -> X X X X X X X
 h8 -> X X X X X X X 
 *** Results: 78% dropped (12/56 received)
 ```
+Dump-flow (only affected switches are reported, the others are empty as they should).
+```
+===== S1 =====
 
+[...] dl_dst=00:00:00:00:00:01 actions=output:"s1-eth1"
+[...] dl_dst=00:00:00:00:00:04 actions=output:"s1-eth4"
+[...] dl_dst=00:00:00:00:00:05 actions=output:"s1-eth4"
+[...] dl_dst=00:00:00:00:00:06 actions=output:"s1-eth4"
+
+ ===== S9 =====
+[...]  dl_dst=00:00:00:00:00:01 actions=output:"s9-eth1"
+[...] dl_dst=00:00:00:00:00:04 actions=output:"s9-eth4"
+[...] dl_dst=00:00:00:00:00:05 actions=output:"s9-eth4"
+[...]  dl_dst=00:00:00:00:00:06 actions=output:"s9-eth4"
+[...]  dl_dst=ff:ff:ff:ff:ff:ff actions=output:"s9-eth1"
+ 
+ ===== S10 =====
+ 
+ dl_dst=00:00:00:00:00:01 actions=output:"s10-eth2"
+ dl_dst=00:00:00:00:00:04 actions=output:"s10-eth1"
+ dl_dst=00:00:00:00:00:05 actions=output:"s10-eth1"
+ dl_dst=00:00:00:00:00:06 actions=output:"s10-eth1"
+ 
+ ===== S8 =====
+ 
+ dl_dst=00:00:00:00:00:01 actions=output:"s8-eth4"
+ dl_dst=00:00:00:00:00:04 actions=output:"s8-eth1"
+ dl_dst=00:00:00:00:00:01 actions=output:"s8-eth4"
+ dl_dst=00:00:00:00:00:05 actions=output:"s8-eth2"
+ dl_dst=00:00:00:00:00:05 actions=output:"s8-eth2"
+ dl_dst=00:00:00:00:00:01 actions=output:"s8-eth4"
+ dl_dst=00:00:00:00:00:06 actions=output:"s8-eth3"
+ dl_dst=00:00:00:00:00:04 actions=output:"s8-eth1"
+ dl_dst=00:00:00:00:00:05 actions=output:"s8-eth2"
+ dl_dst=00:00:00:00:00:04 actions=output:"s8-eth1"
+ dl_dst=00:00:00:00:00:06 actions=output:"s8-eth3"
+ dl_dst=00:00:00:00:00:05 actions=output:"s8-eth2"
+ dl_dst=00:00:00:00:00:06 actions=output:"s8-eth3"
+
+ ===== S4 =====
+ 
+ dl_dst=00:00:00:00:00:01 actions=output:"s4-eth3"
+ dl_dst=00:00:00:00:00:04 actions=output:"s4-eth1"
+ dl_dst=00:00:00:00:00:05 actions=output:"s4-eth3"
+ dl_dst=00:00:00:00:00:06 actions=output:"s4-eth3"
+ 
+ ===== S5 =====
+ 
+ dl_dst=00:00:00:00:00:01 actions=output:"s5-eth3"
+ dl_dst=00:00:00:00:00:05 actions=output:"s5-eth1"
+ dl_dst=00:00:00:00:00:04 actions=output:"s5-eth3"
+ dl_dst=00:00:00:00:00:06 actions=output:"s5-eth3"
+
+ ===== S6 =====
+ dl_dst=00:00:00:00:00:01 actions=output:"s6-eth3"
+ dl_dst=00:00:00:00:00:06 actions=output:"s6-eth1"
+ dl_dst=00:00:00:00:00:04 actions=output:"s6-eth3"
+ dl_dst=00:00:00:00:00:05 actions=output:"s6-eth3"
+
+```
 ##### Linear:
 A linear topology between the host 1-2-4 is the only connection preserved from the base topology.
 Those 3 hosts can ping eachother trough the channel S1-S2-S4.
