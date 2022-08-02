@@ -34,7 +34,7 @@ The ones that we've decided to implement are:
 - Ring topology
 
 The following schema rappresent our base topology built with MININET and the virtual topologies made with RYU-Manager, the red lines are used to easily identify the differences between the base and the current topology. 
-![image info](https://raw.githubusercontent.com/elrich2610/Morphing-Slices/a3d48e770b402eb33f813cfb6ddaa3ae23aef37a/base.svg
+![image info](https://raw.githubusercontent.com/elrich2610/Morphing-Slices/a3d48e770b402eb33f813cfb6ddaa3ae23aef37a/topologie.svg
 )
 
 Below a table rappresenting the ports/device connection of every switch
