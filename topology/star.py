@@ -77,26 +77,10 @@ class StarTopo(app_manager.RyuApp):
         a = 3
         b = 1
         
-        if(switch_id == 1 and in_port == x):#s1
+        if(switch_id == 1 and in_port != y):#s1
             if dst in self.mac_to_port[switch_id]:
                 out_port = self.mac_to_port[switch_id][dst]
                 print (self.mac_to_port[switch_id][dst])
-            else:
-                out_port = y
-        if(switch_id == 1 and in_port == y):#same concept but backwards
-            if dst in self.mac_to_port[switch_id]:
-                out_port = self.mac_to_port[switch_id][dst]
-            else:
-                out_port = x
-
-        if(switch_id == 9 and in_port == y):#s9
-            if dst in self.mac_to_port[switch_id]:
-                out_port = self.mac_to_port[switch_id][dst]
-            else:
-                out_port = x
-        if(switch_id == 9 and in_port == x):#same concept but backwards
-            if dst in self.mac_to_port[switch_id]:
-                out_port = self.mac_to_port[switch_id][dst]
             else:
                 out_port = y
 
