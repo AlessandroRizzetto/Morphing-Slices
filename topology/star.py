@@ -44,7 +44,7 @@ class StarTopo(app_manager.RyuApp):
         datapath = msg.datapath
         ofproto = datapath.ofproto
         parser = datapath.ofproto_parser
-
+       
         # SWITCH ID.
         switch_id = datapath.id
 
@@ -59,8 +59,6 @@ class StarTopo(app_manager.RyuApp):
         # packet ingress port
         in_port = msg.match['in_port']
 
-
-
         for x in datapath.ports:
             conf=datapath.ports[x].config
             break
@@ -74,54 +72,71 @@ class StarTopo(app_manager.RyuApp):
         # if the destination mac address is already learned,
         # decide which port to output the packet, otherwise FLOOD.
         
+        x = 1
+        y = 4
+        a = 3
+        b = 1
         
-        if(switch_id == 1 and in_port == 1):#s1
+        if(switch_id == 1 and in_port == x):#s1
+            if dst in self.mac_to_port[switch_id]:
+                out_port = self.mac_to_port[switch_id][dst]
+                print (self.mac_to_port[switch_id][dst])
+            else:
+                out_port = y
+        if(switch_id == 1 and in_port == y):#same concept but backwards
             if dst in self.mac_to_port[switch_id]:
                 out_port = self.mac_to_port[switch_id][dst]
             else:
-                out_port = 4
-        elif(switch_id == 1 and in_port == 4):
-            if dst in self.mac_to_port[switch_id]:
-                out_port = self.mac_to_port[switch_id][dst]
-            else:
-                out_port = 1
+                out_port = x
 
-        if(switch_id == 9 and in_port == 4):#s9
+        if(switch_id == 9 and in_port == y):#s9
             if dst in self.mac_to_port[switch_id]:
                 out_port = self.mac_to_port[switch_id][dst]
             else:
-                out_port = 1
-                
-        elif(switch_id == 9 and in_port == 1):
+                out_port = x
+        if(switch_id == 9 and in_port == x):#same concept but backwards
             if dst in self.mac_to_port[switch_id]:
                 out_port = self.mac_to_port[switch_id][dst]
             else:
-                out_port = 4
+                out_port = y
 
-        if((switch_id == 4 or switch_id == 5) and in_port == 1):#s4
+        if((switch_id == 4 or switch_id == 5 or switch_id == 6) and in_port != a):#s4 s5 s6
             if dst in self.mac_to_port[switch_id]:
                 out_port = self.mac_to_port[switch_id][dst]
             else:
-                out_port = 3
-       
+                out_port = a
+        
         elif(switch_id in self.cutted):#removed branches, dropping the packet
             return
+        
+
+        if(switch_id > 8 and in_port != 1):#added switch
+            if dst in self.mac_to_port[switch_id]:
+                out_port = self.mac_to_port[switch_id][dst]
+            else:
+                out_port = 1
+
+        
+        if (switch_id == 8):#central switch rules
+            if dst in self.mac_to_port[switch_id]:
+                out_port = self.mac_to_port[switch_id][dst]
+            else:
+                out_port = ofproto.OFPP_FLOOD
+                if (out_port == in_port):
+                    if (in_port == y):
+                        z = x
+                        x = y
+                        y = z
+                    else:
+                        c = a
+                        a = b
+                        b = c
         else:#if present send otherwise flood
             if dst in self.mac_to_port[switch_id]:
                 out_port = self.mac_to_port[switch_id][dst]
             else:
                 out_port = ofproto.OFPP_FLOOD
-
-        if(switch_id == 6 and in_port != 3):
-            if dst in self.mac_to_port[switch_id]:
-                out_port = self.mac_to_port[switch_id][dst]
-            else:
-                out_port = 3
-        if(switch_id > 8 and in_port != 1):
-            if dst in self.mac_to_port[switch_id]:
-                out_port = self.mac_to_port[switch_id][dst]
-            else:
-                out_port = 1
+        
 
         actions = [parser.OFPActionOutput(out_port)]
 
@@ -136,3 +151,4 @@ class StarTopo(app_manager.RyuApp):
                                   in_port=in_port, actions=actions,
                                   data=msg.data)
         datapath.send_msg(out)
+
