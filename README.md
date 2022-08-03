@@ -58,9 +58,10 @@ Table that maps each connection on the right port for every switch of the base t
 git clone https://github.com/elrich2610/Morphing-Slices.git
 cd Morphing-Slices
 ```
-From now on we'll have to work with **2** separate terminals:
+From now on  **2** separate terminals are needed.
+The first terminal is used to run the ryu-controlle. Each slice has its own ryu-controller so it is necessary to run the one corrisponding to the desired virtual topology.
 
-On your first terminal start the controller which will decide how our virtualTopology will looks like
+
 ```bash
 #Terminal 1
 #virtual topologies: [fullOpen - tree - star - ring - linear]
