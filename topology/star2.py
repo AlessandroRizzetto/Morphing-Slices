@@ -12,7 +12,8 @@ class StarTopo(app_manager.RyuApp):
     cutted =[2,3,7]
     def __init__(self, *args, **kwargs):
         super(StarTopo, self).__init__(*args, **kwargs)
-
+        self.centro= input('Definisci lo switch centrale: ')
+        
         self.mac_to_port = {}
 
     @set_ev_cls(ofp_event.EventOFPSwitchFeatures, CONFIG_DISPATCHER)
@@ -72,9 +73,10 @@ class StarTopo(app_manager.RyuApp):
         # if the destination mac address is already learned,
         # decide which port to output the packet, otherwise FLOOD.
         
-        
         dest = dst
-        dst = '00:00:00:00:00:8'
+        dst = "00:00:00:00:00:"+str(self.centro)
+        
+
 
         if(switch_id in self.cutted):#removed branches, dropping the packet
             return
