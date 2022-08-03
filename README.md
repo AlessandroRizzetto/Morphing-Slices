@@ -164,7 +164,7 @@ Dump-flow
 
 ```
 ##### Star:
-explanation of the cutted branches and why it should result like this
+explanation of the cut branches and why it should result like this
 
 ![image info](https://raw.githubusercontent.com/elrich2610/Morphing-Slices/794837be2352d91d2fe320bb3c286427ff3cf161/star.svg)
 
@@ -288,8 +288,8 @@ Dump-flow
 ```
 
 ##### Ring:
-This is an oriented topology so every packet can only travel in one direction.
-If the H1 wants to ping H3 it cannot simply go S1->S3, it must follow the full path S1->S2->S4->S5->S3 (as proven in the dump-flow output where only one dst is on a different port which is the HOST connected to that switch).
+In order to create a slice with a ring topology all the connections involving S6, S7, S9 or S10 are cut and the output ports of each remaining switch are mapped based on the input port of the arriving packets.
+The resulting topology is an oriented ring where the packets travel in one direction only; this means that if for example H1 wants to ping H3,the packets can't simply  follow the S1->S3 path, they must follow the ring topology and take the S1->S2->S4->S5->S3 path.
 
 ![image info](https://raw.githubusercontent.com/elrich2610/Morphing-Slices/794837be2352d91d2fe320bb3c286427ff3cf161/ring.svg
 )
@@ -306,7 +306,8 @@ h6 -> X X X X X X X
 h7 -> X X X X X X X
 h8 -> X X X X X X X
 ```
-Dump-flow (only affected switches are reported, the others are empty as they should).
+Dump-flow
+*only affected switches are reported, the others are rightly empty
 ```
  ===== S1 =====
 
