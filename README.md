@@ -26,18 +26,18 @@
 project description:)
 
 # Mininet
-We have based our project on a "star like" topology wich gave us the flexibility needed to build multiple slices with different topologies on top of it.
+We based our project on a "star like" topology wich gave us the flexibility needed to build multiple slices with different topologies on top of it.
 The topologies that we have decided to implement are:
 - Tree topology
 - Linear topology
 - Star topology
 - Ring topology
 
-Base topology built with MININET: 
+Specific base topology built with MININET: 
 ![image info](https://raw.githubusercontent.com/elrich2610/Morphing-Slices/794837be2352d91d2fe320bb3c286427ff3cf161/base.svg
 )
 
-Below a table rappresenting the ports/device connection of every switch
+Table that maps each connection on the right port for every switch of the base topology:
 |HOST|Port 1|Port 2|Port 3|Port 4|
 |:--|:--:|:--:|:--:|:--:|
 **S1**|  H1  | S2  | S3	    |S9
