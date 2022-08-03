@@ -1,5 +1,5 @@
 #/usr/bin/bash
-topo=(linear star fullOpen ring tree);
+topo=(linear star star2 fullOpen ring tree);
 if [ -z "$1" ]
 then
 	echo ""
@@ -12,7 +12,7 @@ else
 	else
 		echo ""
 		echo "Invalid topology."
-		echo "['fullOpen', 'star', 'ring', 'tree', 'linear']"
+		echo "['fullOpen', 'star', 'star2','ring', 'tree', 'linear']"
 		echo ""
 		exit 1
 	fi
