@@ -77,7 +77,7 @@ sudo python3 baseTopology.py
 Now the virtual slice has been created on top of the physical topology.
 
 ### PoC
-Using the "pingall" command, it is possible to verify the structare of the newly created virtual topology. This command allows you to follow the path of the packets and see that it indeed isn't the one of the base physical topology but the one determined by the running controller.
+Using the "pingall" command, it is possible to verify the structure of the newly created virtual topology. This command allows you to follow the path of the packets and see that it indeed isn't the one of the base physical topology but the one determined by the running controller.
 Another way to explore the newly created topology is to use the script "check.sh" which simply dumps the flow for each switch.
 
 ##### FullOpen:
@@ -98,8 +98,8 @@ h8 -> h1 h2 h3 h4 h5 h6 h7
 ```
 
 ##### Tree:
-In order to create a slice with a tree topology 
-We are cutting everything that is connected to the swtich 2 and 3 for building a treeTopology (Horizontaly oriented from left to right, root is S1).
+In order to create a slice with a tree topology it is necessary to cut every connection involving S2 or S3.
+The resulting topology is an horizontal tree, oriented from left to right with root S1.
 If we want, we can add more deviceS (switches and hosts) to our topology and they will all act accordingly with our controller, answering if they're not connected outside of the (single) path running trough the switches number 9: S1-S9-S10-SN
 
 ![image info](https://raw.githubusercontent.com/elrich2610/Morphing-Slices/794837be2352d91d2fe320bb3c286427ff3cf161/tree.svg
@@ -119,7 +119,8 @@ h8 -> h1 X X h4 h5 h6 h7
 *** Results: 46% dropped (30/56 received)
 ```
 
-Dump-flow (only affected switches are reported, the others are empty as they should).
+Dump-flow 
+*only affected switches are reported, the others are rightly empty
 ```
 ===== S1 =====
 
@@ -180,7 +181,8 @@ h7 -> X X X X X X X
 h8 -> X X X X X X X 
 *** Results: 78% dropped (12/56 received)
 ```
-Dump-flow (only affected switches are reported, the others are empty as they should).
+Dump-flow 
+*only affected switches are reported, the others are rightly empty
 ```
 ===== S1 =====
 
@@ -241,9 +243,8 @@ Dump-flow (only affected switches are reported, the others are empty as they sho
 
 ```
 ##### Linear:
-A linear topology between the host 1-2-4 is the only connection preserved from the base topology.
-Those 3 hosts can ping eachother trough the channel S1-S2-S4.
-
+In order to create a slice with a linear topology only the path that connects S1, S2, and S3 is preserved, any other connection is cut.
+The resulting topology connects H1, H2 and H4 through the S1-S2-S4 channel.
 
 ![image info](https://raw.githubusercontent.com/elrich2610/Morphing-Slices/794837be2352d91d2fe320bb3c286427ff3cf161/linear.svg
 )
@@ -260,7 +261,8 @@ h7 -> X X X X X X X
 h8 -> X X X X X X X
 *** Results: 89% dropped (6/56 received)
 ```
-Dump-flow (only affected switches are reported, the others are empty as they should).
+Dump-flow 
+*only affected switches are reported, the others are rightly empty
 ```
 ===== S1 =====
 
