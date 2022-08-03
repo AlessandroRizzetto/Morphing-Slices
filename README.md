@@ -59,7 +59,8 @@ git clone https://github.com/elrich2610/Morphing-Slices.git
 cd Morphing-Slices
 ```
 From now on  **2** separate terminals are needed.
-The first terminal is used to run the ryu-controlle. Each slice has its own ryu-controller so it is necessary to run the one corrisponding to the desired virtual topology.
+The first terminal is used to run the ryu-controller. 
+Each slice has its own ryu-controller, so it is necessary to run the one corrisponding to the desired virtual topology.
 
 
 ```bash
