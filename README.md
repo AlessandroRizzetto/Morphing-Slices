@@ -80,7 +80,7 @@ Now the virtual slice has been created on top of the physical topology.
 Using the "pingall" command, it is possible to verify the structure of the newly created virtual topology. This command allows you to follow the path of the packets and see that it indeed isn't the one of the base physical topology but the one determined by the running controller.
 Another way to explore the newly created topology is to use the script "check.sh" which simply dumps the flow for each switch.
 
-##### FullOpen:
+### FullOpen:
 The expected result for the base topology with all the switches in OFPP_FLOOD mode is the following:
 ```txt
 #everything reach everything
@@ -97,7 +97,7 @@ h8 -> h1 h2 h3 h4 h5 h6 h7
 *** Results: 0% dropped (56/56 received)
 ```
 
-##### Tree:
+### Tree:
 In order to create a slice with a tree topology it is necessary to cut every connection involving S2 or S3.
 The resulting topology is an horizontal tree, oriented from left to right with root S1.
 If we want, we can add more deviceS (switches and hosts) to our topology and they will all act accordingly with our controller, answering if they're not connected outside of the (single) path running trough the switches number 9: S1-S9-S10-SN
@@ -163,7 +163,7 @@ Dump-flow
 [...] dl_dst=00:00:00:00:00:08 actions=output:"s10-eth1"
 
 ```
-##### Star:
+### Star:
 explanation of the cut branches and why it should result like this
 
 ![image info](https://raw.githubusercontent.com/elrich2610/Morphing-Slices/794837be2352d91d2fe320bb3c286427ff3cf161/star.svg)
@@ -242,7 +242,7 @@ Dump-flow
  dl_dst=00:00:00:00:00:05 actions=output:"s6-eth3"
 
 ```
-##### Linear:
+### Linear:
 In order to create a slice with a linear topology only the path that connects S1, S2, and S3 is preserved, any other connection is cut.
 The resulting topology connects H1, H2 and H4 through the S1-S2-S4 channel.
 
@@ -287,7 +287,7 @@ Dump-flow
 
 ```
 
-##### Ring:
+### Ring:
 In order to create a slice with a ring topology all the connections involving S6, S7, S9 or S10 are cut and the output ports of each remaining switch are mapped based on the input port of the arriving packets.
 The resulting topology is an oriented ring where the packets travel in one direction only; this means that if for example H1 wants to ping H3,the packets can't simply  follow the S1->S3 path, they must follow the ring topology and take the S1->S2->S4->S5->S3 path.
 
