@@ -74,7 +74,7 @@ On the  second terminal, run the physical base topology created with mininet; on
 #Terminal 2
 sudo python3 baseTopology.py
 ```
-Now the virtual slice has been created on top of the physical topology.
+Now the chosen virtual slice has been created on top of the physical topology.
 
 ### PoC
 Using the "pingall" command, it is possible to verify the structure of the newly created virtual topology. This command allows you to follow the path of the packets and see that it indeed isn't the one of the base physical topology but the one determined by the running controller.
@@ -119,7 +119,7 @@ h8 -> h1 X X h4 h5 h6 h7
 *** Results: 46% dropped (30/56 received)
 ```
 
-Dump-flow 
+Dump-flow  
 \*only affected switches are reported, the others are rightly empty
 ```
 ===== S1 =====
