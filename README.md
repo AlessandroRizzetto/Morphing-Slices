@@ -26,14 +26,14 @@
 project description:)
 
 # Mininet
-We have based our project on a "star like" topology wich gave us the flexibility needed for building on top of that multiple topologies.
-The ones that we've decided to implement are:
+We have based our project on a "star like" topology wich gave us the flexibility needed to build multiple slices with different topologies on top of it.
+The topologies that we have decided to implement are:
 - Tree topology
 - Linear topology
 - Star topology
 - Ring topology
 
-The following schema rappresent our base topology built with MININET and the virtual topologies made with RYU-Manager, the red lines are used to easily identify the differences between the base and the current topology. 
+Base topology built with MININET: 
 ![image info](https://raw.githubusercontent.com/elrich2610/Morphing-Slices/794837be2352d91d2fe320bb3c286427ff3cf161/base.svg
 )
 
