@@ -22,8 +22,8 @@
 - [Group members](#Group-Members)
 
 # Intro
-
-project description:)
+The starting point of this project is a single domain base topology where we have full controll of the network. The aim is to generate different slices as overlays of the original topology. This means that the actual base network remains unalterated but the percieved topology is different from the original one. It is importan to understand that this is a virtualization process, new links can't be generated in the process of creating a new virtual slice.
+This technnique can be useful when a service provider wants to have different topoligies on the same physical one.
 
 # Mininet
 We based our project on a "star like" topology wich gave us the flexibility needed to build multiple slices with different topologies on top of it.
@@ -120,7 +120,7 @@ h8 -> h1 X X h4 h5 h6 h7
 ```
 
 Dump-flow 
-*only affected switches are reported, the others are rightly empty
+\*only affected switches are reported, the others are rightly empty
 ```
 ===== S1 =====
 
@@ -182,7 +182,7 @@ h8 -> X X X X X X X
 *** Results: 78% dropped (12/56 received)
 ```
 Dump-flow 
-*only affected switches are reported, the others are rightly empty
+\*only affected switches are reported, the others are rightly empty
 ```
 ===== S1 =====
 
@@ -262,7 +262,7 @@ h8 -> X X X X X X X
 *** Results: 89% dropped (6/56 received)
 ```
 Dump-flow 
-*only affected switches are reported, the others are rightly empty
+\*only affected switches are reported, the others are rightly empty
 ```
 ===== S1 =====
 
@@ -307,7 +307,7 @@ h7 -> X X X X X X X
 h8 -> X X X X X X X
 ```
 Dump-flow
-*only affected switches are reported, the others are rightly empty
+\*only affected switches are reported, the others are rightly empty
 ```
  ===== S1 =====
 
