@@ -306,7 +306,7 @@ h6 -> X X X X X X X
 h7 -> X X X X X X X
 h8 -> X X X X X X X
 ```
-Dump-flow
+Dump-flow 
 \*only affected switches are reported, the others are rightly empty
 ```
  ===== S1 =====
