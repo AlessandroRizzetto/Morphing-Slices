@@ -100,7 +100,7 @@ h8 -> h1 h2 h3 h4 h5 h6 h7
 ### Tree:
 In order to create a slice with a tree topology it is necessary to cut every connection involving S2 or S3.
 The resulting topology is an horizontal tree, oriented from left to right with root S1.
-If we want, we can add more deviceS (switches and hosts) to our topology and they will all act accordingly with our controller, answering if they're not connected outside of the (single) path running trough the switches number 9: S1-S9-S10-SN
+Even if we wanted to add more devices to the the base topology on the S1-S9-S10 path, the implemented tree-controller is still going to correctly generate a tree topology and the new links would all act accordingly.
 
 ![image info](https://raw.githubusercontent.com/elrich2610/Morphing-Slices/794837be2352d91d2fe320bb3c286427ff3cf161/tree.svg
 )
