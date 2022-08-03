@@ -59,7 +59,7 @@ git clone https://github.com/elrich2610/Morphing-Slices.git
 cd Morphing-Slices
 ```
 From now on  **2** separate terminals are needed.
-The first terminal is used to run the ryu-controller. 
+The first terminal is used to run the ryu-controller.
 Each slice has its own ryu-controller, so it is necessary to run the one corrisponding to the desired virtual topology.
 
 
@@ -69,19 +69,19 @@ Each slice has its own ryu-controller, so it is necessary to run the one corrisp
 ./start.sh [virtual topology name]
 ```
 
-On your second terminal run the mininet topology (the physical topology), once started it'll automatically connect to the mininet console
+On the  second terminal, run the physical base topology created with mininet; once started it'll automatically connect to the mininet console
 ```
 #Terminal 2
 sudo python3 baseTopology.py
 ```
+Now the virtual slice has been created on top of the physical topology.
 
 ### PoC
-Using the "pingall" command we'll see how our packets won't follow the base topology but will run trough the path 
-choosen from our controller AKA our controller has modified the logical topology.
-Another way for checking the actual topology is to use the script "check.sh" which simply dumps the flow for each switch.
+Using the "pingall" command, it is possible to verify the structare of the newly created virtual topology. This command allows you to follow the path of the packets and see that it indeed isn't the one of the base physical topology but the one determined by the running controller.
+Another way to explore the newly created topology is to use the script "check.sh" which simply dumps the flow for each switch.
 
 ##### FullOpen:
-The expected result for the basetopology with all the switches in OFPP_FLOOD mode is the following:
+The expected result for the base topology with all the switches in OFPP_FLOOD mode is the following:
 ```txt
 #everything reach everything
 mininet> pingall
@@ -98,6 +98,7 @@ h8 -> h1 h2 h3 h4 h5 h6 h7
 ```
 
 ##### Tree:
+In order to create a slice with a tree topology 
 We are cutting everything that is connected to the swtich 2 and 3 for building a treeTopology (Horizontaly oriented from left to right, root is S1).
 If we want, we can add more deviceS (switches and hosts) to our topology and they will all act accordingly with our controller, answering if they're not connected outside of the (single) path running trough the switches number 9: S1-S9-S10-SN
 
