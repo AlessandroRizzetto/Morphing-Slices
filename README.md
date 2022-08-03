@@ -261,7 +261,7 @@ h7 -> X X X X X X X
 h8 -> X X X X X X X
 *** Results: 89% dropped (6/56 received)
 ```
-Dump-flow 
+Dump-flow  
 \*only affected switches are reported, the others are rightly empty
 ```
 ===== S1 =====
