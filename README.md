@@ -164,7 +164,8 @@ Dump-flow
 
 ```
 ### Star:
-explanation of the cut branches and why it should result like this
+In order to create a slice with a star topology, only the paths that connects the center to the edge's switchs S1, S4, S5 and S6 are preserved, any other connection is cut.
+The resulting topology is a star where the packets must always go through the center to arrive at their destination.
 
 ![image info](https://raw.githubusercontent.com/elrich2610/Morphing-Slices/794837be2352d91d2fe320bb3c286427ff3cf161/star.svg)
 
