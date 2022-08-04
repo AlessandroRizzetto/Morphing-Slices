@@ -172,75 +172,39 @@ The resulting topology is a star where the packets must always go through the ce
 ```txt
 mininet> pingall
 *** Ping: testing ping reachability
-h1 -> X X h4 h5 h6 X X 
-h2 -> X X X X X X X 
-h3 -> X X X X X X X 
-h4 -> h1 X X h5 h6 X X 
-h5 -> h1 X X h4 h6 X X 
-h6 -> h1 X X h4 h5 X X 
-h7 -> X X X X X X X 
-h8 -> X X X X X X X 
+h1 -> X X h4 h5 h6 X X
+h2 -> X X X X X X X
+h3 -> X X X X X X X
+h4 -> h1 X X h5 h6 X X
+h5 -> h1 X X h4 h6 X X
+h6 -> h1 X X h4 h5 X X
+h7 -> X X X X X X X
+h8 -> X X X X X X X
 *** Results: 78% dropped (12/56 received)
 ```
 Dump-flow 
-\*only affected switches are reported, the others are rightly empty
+\*only some representative switches are reported,
 ```
+
 ===== S1 =====
 
-[...] dl_dst=00:00:00:00:00:01 actions=output:"s1-eth1"
 [...] dl_dst=00:00:00:00:00:04 actions=output:"s1-eth4"
 [...] dl_dst=00:00:00:00:00:05 actions=output:"s1-eth4"
 [...] dl_dst=00:00:00:00:00:06 actions=output:"s1-eth4"
 
- ===== S9 =====
-[...]  dl_dst=00:00:00:00:00:01 actions=output:"s9-eth1"
+
+===== S2 =====
+
+
+===== S9 =====
+
 [...] dl_dst=00:00:00:00:00:04 actions=output:"s9-eth4"
 [...] dl_dst=00:00:00:00:00:05 actions=output:"s9-eth4"
-[...]  dl_dst=00:00:00:00:00:06 actions=output:"s9-eth4"
-[...]  dl_dst=ff:ff:ff:ff:ff:ff actions=output:"s9-eth1"
- 
- ===== S10 =====
- 
- dl_dst=00:00:00:00:00:01 actions=output:"s10-eth2"
- dl_dst=00:00:00:00:00:04 actions=output:"s10-eth1"
- dl_dst=00:00:00:00:00:05 actions=output:"s10-eth1"
- dl_dst=00:00:00:00:00:06 actions=output:"s10-eth1"
- 
- ===== S8 =====
- 
- dl_dst=00:00:00:00:00:01 actions=output:"s8-eth4"
- dl_dst=00:00:00:00:00:04 actions=output:"s8-eth1"
- dl_dst=00:00:00:00:00:01 actions=output:"s8-eth4"
- dl_dst=00:00:00:00:00:05 actions=output:"s8-eth2"
- dl_dst=00:00:00:00:00:05 actions=output:"s8-eth2"
- dl_dst=00:00:00:00:00:01 actions=output:"s8-eth4"
- dl_dst=00:00:00:00:00:06 actions=output:"s8-eth3"
- dl_dst=00:00:00:00:00:04 actions=output:"s8-eth1"
- dl_dst=00:00:00:00:00:05 actions=output:"s8-eth2"
- dl_dst=00:00:00:00:00:04 actions=output:"s8-eth1"
- dl_dst=00:00:00:00:00:06 actions=output:"s8-eth3"
- dl_dst=00:00:00:00:00:05 actions=output:"s8-eth2"
- dl_dst=00:00:00:00:00:06 actions=output:"s8-eth3"
+[...] dl_dst=00:00:00:00:00:06 actions=output:"s9-eth4"
 
- ===== S4 =====
- 
- dl_dst=00:00:00:00:00:01 actions=output:"s4-eth3"
- dl_dst=00:00:00:00:00:04 actions=output:"s4-eth1"
- dl_dst=00:00:00:00:00:05 actions=output:"s4-eth3"
- dl_dst=00:00:00:00:00:06 actions=output:"s4-eth3"
- 
- ===== S5 =====
- 
- dl_dst=00:00:00:00:00:01 actions=output:"s5-eth3"
- dl_dst=00:00:00:00:00:05 actions=output:"s5-eth1"
- dl_dst=00:00:00:00:00:04 actions=output:"s5-eth3"
- dl_dst=00:00:00:00:00:06 actions=output:"s5-eth3"
 
- ===== S6 =====
- dl_dst=00:00:00:00:00:01 actions=output:"s6-eth3"
- dl_dst=00:00:00:00:00:06 actions=output:"s6-eth1"
- dl_dst=00:00:00:00:00:04 actions=output:"s6-eth3"
- dl_dst=00:00:00:00:00:05 actions=output:"s6-eth3"
+
+
 
 ```
 ### Linear:
