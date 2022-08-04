@@ -185,28 +185,63 @@ h8 -> X X X X X X X
 Dump-flow 
 \*only some representative switches are reported,
 ```
-
 ===== S1 =====
 
+[...] dl_dst=00:00:00:00:00:01 actions=output:"s1-eth1"
 [...] dl_dst=00:00:00:00:00:04 actions=output:"s1-eth4"
 [...] dl_dst=00:00:00:00:00:05 actions=output:"s1-eth4"
 [...] dl_dst=00:00:00:00:00:06 actions=output:"s1-eth4"
 
+===== S4 =====
 
-===== S2 =====
-cookie=0x0, duration=109.717s, table=0, n_packets=409, n_bytes=24262, priority=0 actions=CONTROLLER:65535
+[...] dl_dst=00:00:00:00:00:01 actions=output:"s4-eth3"
+[...] dl_dst=00:00:00:00:00:04 actions=output:"s4-eth1"
+[...] dl_dst=00:00:00:00:00:05 actions=output:"s4-eth3"
+[...] dl_dst=00:00:00:00:00:06 actions=output:"s4-eth3"
+
+===== S5 =====
+                
+[...] dl_dst=00:00:00:00:00:01 actions=output:"s5-eth3"
+[...] dl_dst=00:00:00:00:00:05 actions=output:"s5-eth1"
+[...] dl_dst=00:00:00:00:00:04 actions=output:"s5-eth3"
+[...] dl_dst=00:00:00:00:00:06 actions=output:"s5-eth3"
+
+===== S6 =====
+
+[...] dl_dst=00:00:00:00:00:01 actions=output:"s6-eth3"
+[...] dl_dst=00:00:00:00:00:06 actions=output:"s6-eth1"
+[...] dl_dst=00:00:00:00:00:04 actions=output:"s6-eth3"
+[...] dl_dst=00:00:00:00:00:05 actions=output:"s6-eth3"
+
+===== S8 =====
+
+[...] dl_dst=00:00:00:00:00:01 actions=output:"s8-eth4"
+[...] dl_dst=00:00:00:00:00:04 actions=output:"s8-eth1"
+[...] dl_dst=00:00:00:00:00:01 actions=output:"s8-eth4"
+[...] dl_dst=00:00:00:00:00:05 actions=output:"s8-eth2"
+[...] dl_dst=00:00:00:00:00:01 actions=output:"s8-eth4"
+[...] dl_dst=00:00:00:00:00:06 actions=output:"s8-eth3"
+[...] dl_dst=00:00:00:00:00:04 actions=output:"s8-eth1"
+[...] dl_dst=00:00:00:00:00:05 actions=output:"s8-eth2"
+[...] dl_dst=00:00:00:00:00:04 actions=output:"s8-eth1"
+[...] dl_dst=00:00:00:00:00:06 actions=output:"s8-eth3"
+[...] dl_dst=00:00:00:00:00:05 actions=output:"s8-eth2"
+[...] dl_dst=00:00:00:00:00:06 actions=output:"s8-eth3"
 
 ===== S9 =====
 
+[...] dl_dst=00:00:00:00:00:01 actions=output:"s9-eth1"
 [...] dl_dst=00:00:00:00:00:04 actions=output:"s9-eth4"
 [...] dl_dst=00:00:00:00:00:05 actions=output:"s9-eth4"
 [...] dl_dst=00:00:00:00:00:06 actions=output:"s9-eth4"
 
 ===== S10 =====
 
- [...] dl_dst=00:00:00:00:00:04 actions=output:"s10-eth1"
- [...] dl_dst=00:00:00:00:00:05 actions=output:"s10-eth1"
- [...] dl_dst=00:00:00:00:00:06 actions=output:"s10-eth1"
+[...] dl_dst=00:00:00:00:00:01 actions=output:"s10-eth2"
+[...] dl_dst=00:00:00:00:00:04 actions=output:"s10-eth1"
+[...] dl_dst=00:00:00:00:00:05 actions=output:"s10-eth1"
+[...] dl_dst=00:00:00:00:00:06 actions=output:"s10-eth1"
+
 
 ```
 
