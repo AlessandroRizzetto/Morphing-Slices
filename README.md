@@ -255,7 +255,7 @@ Dump-flow
 In order to create a slice with a ring topology all the connections involving S6, S7, S9 or S10 are cut and the output ports of each remaining switch are mapped based on the input port of the arriving packets.
 The resulting topology is an oriented ring where the packets travel in one direction only; this means that if for example H1 wants to ping H3,the packets can't simply  follow the S1->S3 path, they must follow the ring topology and take the S1->S2->S4->S5->S3 path.
 
-![image info](https://raw.githubusercontent.com/elrich2610/Morphing-Slices/794837be2352d91d2fe320bb3c286427ff3cf161/ring.svg
+![image info](https://raw.githubusercontent.com/elrich2610/Morphing-Slices/48494969afcd059c64dc7cf197c247a6adb67b66/images/oriented%20ring.svg
 )
 
 ```txt
