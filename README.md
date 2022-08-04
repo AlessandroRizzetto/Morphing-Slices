@@ -194,7 +194,7 @@ Dump-flow
 
 
 ===== S2 =====
-
+cookie=0x0, duration=109.717s, table=0, n_packets=409, n_bytes=24262, priority=0 actions=CONTROLLER:65535
 
 ===== S9 =====
 
@@ -202,6 +202,11 @@ Dump-flow
 [...] dl_dst=00:00:00:00:00:05 actions=output:"s9-eth4"
 [...] dl_dst=00:00:00:00:00:06 actions=output:"s9-eth4"
 
+===== S10 =====
+
+ [...] dl_dst=00:00:00:00:00:04 actions=output:"s10-eth1"
+ [...] dl_dst=00:00:00:00:00:05 actions=output:"s10-eth1"
+ [...] dl_dst=00:00:00:00:00:06 actions=output:"s10-eth1"
 
 ```
 
