@@ -77,20 +77,22 @@ class TreeTopo(app_manager.RyuApp):
         # decide which port to output the packet, otherwise FLOOD.
         # if the destination mac address is already learned,
         # decide which port to output the packet, otherwise FLOOD.
-        if(switch_id in self.cutted):
-            return
-        
-        if((switch_id == 1 or switch_id == 9) and in_port != 4):#s1->s9->s10
+
+    
+        if((switch_id == 1 or switch_id == 9 or switch_id==2 or switch_id==3 ) and in_port != 4):#s1->s9->s10
                 out_port = 4
         elif(switch_id == 10 and in_port != 1):#s9<->s10<->s8
                 out_port = 1
-       
-        elif(switch_id == 8 and in_port == 4):
-                out_port = ofproto.OFPP_FLOOD
-        elif((switch_id == 4 or switch_id == 6 or switch_id == 5 ) and in_port != 3):#s1->s9->s10
+        
+        elif((switch_id == 4 or switch_id == 6 or switch_id == 5 or switch_id==7) and in_port != 3):#s1->s9->s10
                 out_port = 3
         else:
-            out_port = ofproto.OFPP_FLOOD
+            if(dst in self.mac_to_port[switch_id]):
+                out_port = self.mac_to_port[switch_id][dst]
+            else:
+                out_port = ofproto.OFPP_FLOOD
+
+        
 
 
 
