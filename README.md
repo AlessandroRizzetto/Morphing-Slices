@@ -203,10 +203,9 @@ Dump-flow
 [...] dl_dst=00:00:00:00:00:06 actions=output:"s9-eth4"
 
 
-
-
-
 ```
+
+
 ### Linear:
 In order to create a slice with a linear topology only the path that connects S1, S2, and S3 is preserved, any other connection is cut.
 The resulting topology connects H1, H2 and H4 through the S1-S2-S4 channel.
