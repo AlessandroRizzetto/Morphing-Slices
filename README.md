@@ -26,7 +26,7 @@ The starting point of this project is a single domain base topology where we hav
 This technnique can be useful when a service provider wants to have different topoligies on the same physical one.
 
 # Mininet
-We based our project on a "star like" topology wich gave us the flexibility needed to build multiple slices with different topologies on top of it.
+We based our project on a "star like" topology whic gave us the flexibility needed to build multiple slices with different topologies on top of it.
 The topologies that we have decided to implement are:
 - Tree topology
 - Linear topology
