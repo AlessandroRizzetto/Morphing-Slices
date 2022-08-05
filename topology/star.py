@@ -75,8 +75,6 @@ class StarTopo(app_manager.RyuApp):
 
         # if the destination mac address is already learned,
         # decide which port to output the packet, otherwise FLOOD.
-        # if the destination mac address is already learned,
-        # decide which port to output the packet, otherwise FLOOD.
         if(switch_id in self.cutted):
             return
         
