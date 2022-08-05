@@ -23,7 +23,7 @@
 
 # Intro
 The starting point of this project is a single domain base topology where we have full controll of the network. The aim is to generate different slices as overlays of the original topology. This means that the actual base network remains unaltered but the percieved topology is different from the original one. It is importan to understand that this is a virtualization process, new links can't be generated in the process of creating a new virtual slice.
-This technnique can be useful when a service provider wants to have different topoligies on the same physical one.
+This technique can be useful when a service provider wants to have different topoligies on the same physical one.
 
 # Mininet
 We based our project on a "star like" topology which gave us the flexibility needed to build multiple slices with different topologies on top of it.
