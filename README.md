@@ -22,7 +22,7 @@
 - [Group members](#Group-Members)
 
 # Intro
-The starting point of this project is a single domain base topology where we have full controll of the network. The aim is to generate different slices as overlays of the original topology. This means that the actual base network remains unaltered but the percieved topology is different from the original one. It is importan to understand that this is a virtualization process, new links can't be generated in the process of creating a new virtual slice.
+The starting point of this project is a single domain base topology where we have full control of the network. The aim is to generate different slices as overlays of the original topology. This means that the actual base network remains unaltered but the perceived topology is different from the original one. It is important to understand that this is a virtualization process, new links can't be generated in the process of creating a new virtual slice.
 This technique can be useful when a service provider wants to have different topologies on the same physical one.
 
 # Mininet
@@ -60,7 +60,7 @@ cd Morphing-Slices
 ```
 From now on  **2** separate terminals are needed.
 The first terminal is used to run the ryu-controller.
-Each slice has its own ryu-controller, so it is necessary to run the one corrisponding to the desired virtual topology.
+Each slice has its own ryu-controller, so it is necessary to run the one corresponding to the desired virtual topology.
 
 
 ```bash
@@ -164,7 +164,7 @@ Dump-flow
 
 ```
 ### Star:
-In order to create a slice with a star topology, only the paths that connects the center to the edge's switchs S1, S4, S5 and S6 are preserved, any other connection is cut.
+In order to create a slice with a star topology, only the paths that connects the center to the edge's switches S1, S4, S5 and S6 are preserved, any other connection is cut.
 The resulting topology is a star where the packets must always go through the center to arrive at their destination.
 
 ![image info](https://raw.githubusercontent.com/elrich2610/Morphing-Slices/794837be2352d91d2fe320bb3c286427ff3cf161/star.svg)
