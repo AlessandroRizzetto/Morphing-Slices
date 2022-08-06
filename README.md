@@ -164,7 +164,7 @@ Dump-flow
 
 ```
 ### Star:
-In order to create a slice with a star topology, only the paths that connects the center to the edge's switches S1, S4, S5 and S6 are preserved, any other connection is cut.
+In order to create a slice with a star topology, only the paths that connects the center to the edge switches S1, S4, S5 and S6 are preserved, any other connection is cut. The logic behind this slice is that any packet coming from a port that isn't part of the path that connects the device to the center is sent to the central switch of the virtual star topology otherwise the flooding algorithm is applied.
 The resulting topology is a star where the packets must always go through the center to arrive at their destination.
 
 ![image info](https://raw.githubusercontent.com/elrich2610/Morphing-Slices/794837be2352d91d2fe320bb3c286427ff3cf161/star.svg)
@@ -183,64 +183,23 @@ h8 -> X X X X X X X
 *** Results: 78% dropped (12/56 received)
 ```
 Dump-flow 
-\*only some representative switches are reported,
+\*only some representative switches are reported
+
 ```
+
 ===== S1 =====
 
-[...] dl_dst=00:00:00:00:00:01 actions=output:"s1-eth1"
 [...] dl_dst=00:00:00:00:00:04 actions=output:"s1-eth4"
 [...] dl_dst=00:00:00:00:00:05 actions=output:"s1-eth4"
 [...] dl_dst=00:00:00:00:00:06 actions=output:"s1-eth4"
 
-===== S4 =====
+===== S2 =====
 
-[...] dl_dst=00:00:00:00:00:01 actions=output:"s4-eth3"
-[...] dl_dst=00:00:00:00:00:04 actions=output:"s4-eth1"
-[...] dl_dst=00:00:00:00:00:05 actions=output:"s4-eth3"
-[...] dl_dst=00:00:00:00:00:06 actions=output:"s4-eth3"
-
-===== S5 =====
-                
-[...] dl_dst=00:00:00:00:00:01 actions=output:"s5-eth3"
-[...] dl_dst=00:00:00:00:00:05 actions=output:"s5-eth1"
-[...] dl_dst=00:00:00:00:00:04 actions=output:"s5-eth3"
-[...] dl_dst=00:00:00:00:00:06 actions=output:"s5-eth3"
-
-===== S6 =====
-
-[...] dl_dst=00:00:00:00:00:01 actions=output:"s6-eth3"
-[...] dl_dst=00:00:00:00:00:06 actions=output:"s6-eth1"
-[...] dl_dst=00:00:00:00:00:04 actions=output:"s6-eth3"
-[...] dl_dst=00:00:00:00:00:05 actions=output:"s6-eth3"
-
-===== S8 =====
-
-[...] dl_dst=00:00:00:00:00:01 actions=output:"s8-eth4"
-[...] dl_dst=00:00:00:00:00:04 actions=output:"s8-eth1"
-[...] dl_dst=00:00:00:00:00:01 actions=output:"s8-eth4"
-[...] dl_dst=00:00:00:00:00:05 actions=output:"s8-eth2"
-[...] dl_dst=00:00:00:00:00:01 actions=output:"s8-eth4"
-[...] dl_dst=00:00:00:00:00:06 actions=output:"s8-eth3"
-[...] dl_dst=00:00:00:00:00:04 actions=output:"s8-eth1"
-[...] dl_dst=00:00:00:00:00:05 actions=output:"s8-eth2"
-[...] dl_dst=00:00:00:00:00:04 actions=output:"s8-eth1"
-[...] dl_dst=00:00:00:00:00:06 actions=output:"s8-eth3"
-[...] dl_dst=00:00:00:00:00:05 actions=output:"s8-eth2"
-[...] dl_dst=00:00:00:00:00:06 actions=output:"s8-eth3"
 
 ===== S9 =====
-
-[...] dl_dst=00:00:00:00:00:01 actions=output:"s9-eth1"
 [...] dl_dst=00:00:00:00:00:04 actions=output:"s9-eth4"
 [...] dl_dst=00:00:00:00:00:05 actions=output:"s9-eth4"
 [...] dl_dst=00:00:00:00:00:06 actions=output:"s9-eth4"
-
-===== S10 =====
-
-[...] dl_dst=00:00:00:00:00:01 actions=output:"s10-eth2"
-[...] dl_dst=00:00:00:00:00:04 actions=output:"s10-eth1"
-[...] dl_dst=00:00:00:00:00:05 actions=output:"s10-eth1"
-[...] dl_dst=00:00:00:00:00:06 actions=output:"s10-eth1"
 
 
 ```
