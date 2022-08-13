@@ -7,26 +7,15 @@ from ryu.lib.packet import packet
 from ryu.lib.packet import ethernet
 
 class LinearTopo(app_manager.RyuApp):
-    avoid_dst =['ff:ff:ff:ff:ff:ff', '33:33:00:00:00:02','33:33:00:00:00:16']
+    avoid_dst =['ff:ff:ff:ff:ff:ff','33:33:ff:00:00:08', '33:33:00:00:00:02','33:33:00:00:00:16']
     save_dst =['00:00:00:00:00:01','00:00:00:00:00:02','00:00:00:00:00:04']
     OFP_VERSIONS = [ofproto_v1_3.OFP_VERSION]
     cutted =[3,5,6,7,8,9,10]
+    old_dst =''
     def __init__(self, *args, **kwargs):
         super(LinearTopo, self).__init__(*args, **kwargs)
         self.mac_to_port ={}
-        '''
-        self.mac_to_port = {
-                1: {'00:00:00:00:00:01':1},
-                2: {'00:00:00:00:00:02':1},
-                3: {},
-                4: {'00:00:00:00:00:04':1},
-                5: {},
-                6: {},
-                7: {},
-                8: {},
-                9: {},
-                10: {}}
-        '''
+
 
     @set_ev_cls(ofp_event.EventOFPSwitchFeatures, CONFIG_DISPATCHER)
     def switch_features_handler(self, ev):
@@ -53,6 +42,7 @@ class LinearTopo(app_manager.RyuApp):
 
     @set_ev_cls(ofp_event.EventOFPPacketIn, MAIN_DISPATCHER)
     def _packet_in_handler(self, ev):
+        global old_dst
         msg = ev.msg
         datapath = msg.datapath
         ofproto = datapath.ofproto
@@ -73,29 +63,25 @@ class LinearTopo(app_manager.RyuApp):
         in_port = msg.match['in_port']
 
 
-        '''
-        for x in datapath.ports:
-            conf=datapath.ports[x].config
-            break
-        '''
 
-        if(dst not in self.avoid_dst and (switch_id not in self.cutted)):
+
+        if(dst not in self.avoid_dst and switch_id not in self.cutted):
+            if(self.old_dst != dst and self.old_dst != '' and dst not in self.avoid_dst):
+                self.logger.info("ARRIVED AT H%s",self.old_dst.split(':')[5][1])
             self.logger.info("input port: P%s IN SWITCH S%s looking for %s",in_port,switch_id,dst)
-
         # learn a mac address to avoid FLOOD next time.
-        trovato=False
         self.mac_to_port[switch_id][src] = in_port
         # if the destination mac address is already learned,
         # decide which port to output the packet, otherwise FLOOD.
         if(switch_id in self.cutted):
             return
         elif(dst in self.mac_to_port[switch_id]):
-            self.logger.info("============ ARRIVATO %s =========",switch_id)
             out_port = self.mac_to_port[switch_id][dst]
-            trovato=True
         else:
             out_port = ofproto.OFPP_FLOOD
 
+        if(dst not in self.avoid_dst):
+            self.old_dst = dst
 
         actions = [parser.OFPActionOutput(out_port)]
 
