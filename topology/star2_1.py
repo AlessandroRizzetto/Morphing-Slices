@@ -155,7 +155,6 @@ class TreeTopo(app_manager.RyuApp):
         if(switch_id == 1 and in_port != y):#s1
                 if dst in self.mac_to_port[switch_id]:
                     out_port = self.mac_to_port[switch_id][dst]
-                    print (self.mac_to_port[switch_id][dst])
                 else:
                     out_port = y
 
