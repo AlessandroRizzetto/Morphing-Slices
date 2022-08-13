@@ -7,10 +7,11 @@ from ryu.lib.packet import packet
 from ryu.lib.packet import ethernet
 
 class TreeTopo(app_manager.RyuApp):
-    avoid_dst =['ff:ff:ff:ff:ff:ff', '33:33:00:00:00:02','33:33:00:00:00:16']
+    avoid_dst =['ff:ff:ff:ff:ff:ff','33:33:ff:00:00:08', '33:33:00:00:00:02','33:33:00:00:00:16']
     save_dst =['00:00:00:00:00:01','00:00:00:00:00:02','00:00:00:00:00:03','00:00:00:00:00:04' ,'00:00:00:00:00:05' ,'00:00:00:00:00:06' ,'00:00:00:00:00:07' ,'00:00:00:00:00:08' ]
     OFP_VERSIONS = [ofproto_v1_3.OFP_VERSION]
     cutted =[2,3]
+    old_dst =''
     def __init__(self, *args, **kwargs):
         super(TreeTopo, self).__init__(*args, **kwargs)
 
@@ -41,6 +42,7 @@ class TreeTopo(app_manager.RyuApp):
 
     @set_ev_cls(ofp_event.EventOFPPacketIn, MAIN_DISPATCHER)
     def _packet_in_handler(self, ev):
+        global old_dst
         msg = ev.msg
         datapath = msg.datapath
         ofproto = datapath.ofproto
@@ -67,9 +69,13 @@ class TreeTopo(app_manager.RyuApp):
             conf=datapath.ports[x].config
             break
 
-        if(dst not in self.avoid_dst and switch_id not in self.cutted):
-            self.logger.info("input port: P%s IN SWITCH S%s looking for %s",in_port,switch_id,dst)
+        if(switch_id in self.cutted):
+            return
 
+        if(dst not in self.avoid_dst and switch_id not in self.cutted):
+            if(self.old_dst != dst and self.old_dst != '' and dst not in self.avoid_dst):
+                self.logger.info("ARRIVED AT H%s",self.old_dst.split(':')[5][1])
+            self.logger.info("input port: P%s IN SWITCH S%s looking for %s",in_port,switch_id,dst)
         # learn a mac address to avoid FLOOD next time.
         self.mac_to_port[switch_id][src] = in_port
 
@@ -77,8 +83,6 @@ class TreeTopo(app_manager.RyuApp):
         # decide which port to output the packet, otherwise FLOOD.
         # if the destination mac address is already learned,
         # decide which port to output the packet, otherwise FLOOD.
-        if(switch_id in self.cutted):
-            return
         
         if(switch_id == 1 and in_port == 1):#s1->s9->s10
             if dst in self.mac_to_port[switch_id]:
@@ -120,8 +124,8 @@ class TreeTopo(app_manager.RyuApp):
 
 
 
-
-
+        if(dst not in self.avoid_dst):
+            self.old_dst = dst
         actions = [parser.OFPActionOutput(out_port)]
 
         # install a flow to avoid packet_in next time.
