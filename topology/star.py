@@ -84,9 +84,6 @@ class TreeTopo(app_manager.RyuApp):
                 out_port = 4
         elif(switch_id == 10 and in_port != 1):#s9<->s10<->s8
                 out_port = 1
-       
-        elif(switch_id == 8 and in_port == 4):
-                out_port = ofproto.OFPP_FLOOD
         elif((switch_id == 4 or switch_id == 6 or switch_id == 5 ) and in_port != 3):#s1->s9->s10
                 out_port = 3
         else:
