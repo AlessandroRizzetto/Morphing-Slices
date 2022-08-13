@@ -98,7 +98,6 @@ class RingTopo(app_manager.RyuApp):
         if(s in self.cutted):
             return
         elif(dst in self.mac_to_port[s]):
-            self.logger.info("============ ARRIVATO %s =========",s)
             out_port = self.mac_to_port[s][dst]
             trovato=True
         elif(s==1 and p==1 and trovato==False):
